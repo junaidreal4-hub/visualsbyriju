@@ -187,7 +187,7 @@
     .contact-sub { font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); letter-spacing:0.1em; margin-bottom:3.5rem; }
     .contact-cta { display:inline-flex; align-items:center; gap:1rem; padding:1rem 2.5rem; border:1px solid var(--text-muted); font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:border-color 0.3s,opacity 0.3s; }
     .contact-cta:hover { border-color:var(--text); opacity:0.6; }
-    .contact-socials { display:flex; justify-content:center; gap:2rem; margin-top:4rem; }
+    .contact-socials { display:flex; justify-content:center; gap:2rem; margin-top:4rem; flex-wrap:wrap; }
     .contact-socials a { font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.3s; }
     .contact-socials a:hover { color:var(--text); }
 
@@ -214,7 +214,7 @@
       .hero-title{font-size:clamp(2.2rem,9vw,3.5rem)}
       .timeline-title{display:none} .timeline-item{padding:0.85rem 0.6rem}
       footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem}
-      #contact{padding:6rem 1.5rem} .contact-socials{gap:1.2rem;flex-wrap:wrap}
+      #contact{padding:6rem 1.5rem} .contact-socials{gap:1.2rem}
       .works-scatter{min-height:280vw}
       .lightbox-inner{width:95vw}
       .loader-bar-track{width:200px}
@@ -264,13 +264,13 @@
       <video class="hero-vid active" id="hv0" muted playsinline preload="auto"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Coorg_rjk6y9.jpg"
         src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"></video>
-      <video class="hero-vid" id="hv1" muted playsinline preload="auto"
+      <video class="hero-vid" id="hv1" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Happen_Blr_jkugba.jpg"
         src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba"></video>
-      <video class="hero-vid" id="hv2" muted playsinline preload="auto"
+      <video class="hero-vid" id="hv2" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Tbsm_ufto4k.jpg"
         src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k"></video>
-      <video class="hero-vid" id="hv3" muted playsinline preload="auto"
+      <video class="hero-vid" id="hv3" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Kodai_wmabpd.jpg"
         src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd"></video>
     </div>
@@ -375,9 +375,12 @@
       <span class="contact-label-top reveal">(Contact)</span>
       <h2 class="contact-heading reveal">Let's build<br/>something <em>remarkable</em></h2>
       <p class="contact-sub reveal">Available for projects worldwide</p>
-      <a href="mailto:hello@visualsbyriju.com" class="contact-cta reveal">Start a Project &nbsp;&#8594;</a>
+      <a href="mailto:visualsbyriju@gmail.com" class="contact-cta reveal">Start a Project &nbsp;&#8594;</a>
       <div class="contact-socials reveal reveal-delay-2">
-        <a href="#">Instagram</a><a href="#">YouTube</a><a href="#">Vimeo</a><a href="#">LinkedIn</a>
+        <a href="https://www.instagram.com/visualsbyriju" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://youtu.be/wQwyVq_eUI8" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://wa.me/919474269894" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:visualsbyriju@gmail.com">Email</a>
       </div>
     </div>
   </section>
@@ -386,7 +389,7 @@
   <footer>
     <div class="footer-name">VisualsbyRiju</div>
     <div class="footer-frame">Rendering frame <span id="frameNum">0</span> of 500</div>
-    <div class="footer-copy">&#169; 2024 VisualsbyRiju. All rights reserved.</div>
+    <div class="footer-copy">&#169; 2025 VisualsbyRiju. All rights reserved.</div>
   </footer>
 
 <script>
@@ -398,7 +401,7 @@
   var fill   = document.getElementById('loaderBarFill');
   var label  = document.getElementById('loaderFrameText');
   var TOTAL  = 500;
-  var DURATION = 3000; // 3s
+  var DURATION = 3000;
   var start  = Date.now();
   var raf;
 
@@ -415,7 +418,6 @@
   }
 
   function done(){
-    // wait a tiny beat then fade out
     setTimeout(function(){
       loader.style.opacity = '0';
       setTimeout(function(){
@@ -425,19 +427,17 @@
     }, 200);
   }
 
-  // gate: wait for animation finish AND video canplay (or 5s fallback)
   var animDone = false, videoDone = false;
   function tryStart(){
     if(animDone && videoDone){ raf = requestAnimationFrame(tick); }
   }
 
-  // small delay so fonts load first
   setTimeout(function(){ animDone = true; tryStart(); }, 120);
 
   var hv0 = document.getElementById('hv0');
   function onVideoReady(){ if(!videoDone){ videoDone = true; tryStart(); } }
   hv0.addEventListener('canplay', onVideoReady, { once: true });
-  setTimeout(onVideoReady, 5000); // hard fallback
+  setTimeout(onVideoReady, 5000);
 })();
 
 /* =========================================================
