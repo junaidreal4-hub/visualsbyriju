@@ -19,75 +19,6 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--font-mono); overflow-x: hidden; cursor: none; }
 
-    /* ===================== LOADER ===================== */
-    #loader {
-      position: fixed; inset: 0; z-index: 99999;
-      background: #080808;
-      display: flex; flex-direction: column;
-      align-items: flex-start; justify-content: flex-end;
-      padding: 3rem 3.5rem 3rem;
-      overflow: hidden;
-      transition: opacity 0.5s ease;
-    }
-    #loader.fade-out { opacity: 0; pointer-events: none; }
-
-    .loader-scanline {
-      position: absolute; left: 0; right: 0; top: 0; height: 2px;
-      background: linear-gradient(to right, transparent, rgba(232,232,226,0.12), transparent);
-      animation: scanSweep 2.4s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes scanSweep {
-      0%   { transform: translateY(0vh);   opacity: 0; }
-      5%   { opacity: 1; }
-      95%  { opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-    .loader-noise {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity: 0.45;
-    }
-    #loaderWave {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 52%;
-      opacity: 0.25; pointer-events: none;
-    }
-    .loader-sys-tag {
-      position: absolute; top: 2.8rem; right: 3.5rem;
-      font-family: var(--font-code); font-size: 0.58rem;
-      color: #2e2e2c; letter-spacing: 0.15em;
-      line-height: 1.9; text-align: right;
-    }
-    .loader-terminal {
-      position: relative; z-index: 2;
-      width: 100%; margin-bottom: 2rem;
-    }
-    .loader-line {
-      font-family: var(--font-code); font-size: 0.68rem;
-      letter-spacing: 0.06em; line-height: 2.1;
-      color: #2a2a28;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    .loader-line.active { color: #e8e8e2; }
-    .loader-line.done   { color: #323230; }
-    .loader-line.done   .ll-status { color: #2a4a2a; }
-    .loader-line.active .ll-status { color: #5aff5a; animation: blink 0.7s step-end infinite; }
-    .ll-prompt { color: #2e2e2c; flex-shrink: 0; }
-    .ll-status { font-size: 0.55rem; margin-left: auto; letter-spacing: 0.1em; flex-shrink: 0; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-    .loader-progress {
-      position: relative; z-index: 2;
-      display: flex; align-items: center; gap: 1.2rem;
-      width: 100%;
-    }
-    .loader-ascii-bar { font-family: var(--font-code); font-size: 0.68rem; color: #e8e8e2; letter-spacing: 0.03em; }
-    .loader-pct { font-family: var(--font-code); font-size: 0.68rem; color: #e8e8e2; letter-spacing: 0.1em; min-width: 38px; }
-    .loader-tc  { font-family: var(--font-code); font-size: 0.58rem; color: #2e2e2c; letter-spacing: 0.1em; margin-left: auto; }
-
-    .loader-shutter { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-    .shutter-slice  { position: absolute; left: 0; right: 0; background: #080808; will-change: transform; }
-
     /* ===================== CURSOR ===================== */
     .cursor { position: fixed; width: 48px; height: 48px; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
     body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke: #cc0000; }
@@ -104,7 +35,6 @@
     /* ===================== HERO ===================== */
     #hero { position:relative; width:100vw; height:100vh; overflow:hidden; background:var(--bg); }
     .hero-videos { position:absolute; inset:0; z-index:0; }
-    /* FIX: opacity:1 so the poster image is visible immediately — loader sits on top anyway */
     .hero-vid { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.8s ease; }
     .hero-vid.active { opacity:1; }
     .hero-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom,rgba(8,8,8,.35) 0%,rgba(8,8,8,.15) 40%,rgba(8,8,8,.55) 75%,rgba(8,8,8,.85) 100%); }
@@ -238,27 +168,10 @@
       #contact{padding:6rem 1.5rem} .contact-socials{gap:1.2rem;flex-wrap:wrap}
       .works-scatter{min-height:280vw}
       .lightbox-inner{width:95vw}
-      #loader{padding:2rem 1.5rem 2rem}
-      .loader-sys-tag{display:none}
     }
   </style>
 </head>
 <body>
-
-  <!-- LOADER -->
-  <div id="loader">
-    <div class="loader-scanline"></div>
-    <div class="loader-noise"></div>
-    <canvas id="loaderWave"></canvas>
-    <div class="loader-sys-tag">VBR_SYS v2.4.1<br/>CODEC &nbsp;H.265<br/>DEPTH &nbsp;10bit<br/>CS &nbsp;&nbsp;&nbsp;&nbsp;REC.2020</div>
-    <div class="loader-terminal" id="loaderTerminal"></div>
-    <div class="loader-progress">
-      <span class="loader-ascii-bar" id="loaderAscii">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</span>
-      <span class="loader-pct" id="loaderPct">0%</span>
-      <span class="loader-tc" id="loaderTC">00:00:00:00</span>
-    </div>
-    <div class="loader-shutter" id="loaderShutter"></div>
-  </div>
 
   <!-- CURSOR -->
   <div class="cursor" id="cursor">
@@ -285,9 +198,6 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-videos">
-      <!-- FIX: poster added — Cloudinary auto-generates a thumbnail from the video.
-           This ensures a still frame is visible immediately on cold load,
-           eliminating the black flash before the video buffers. -->
       <video class="hero-vid active" id="hv0" muted playsinline preload="auto"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Coorg_rjk6y9.jpg"
         src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"></video>
@@ -417,183 +327,6 @@
   </footer>
 
 <script>
-/* =========================================================
-   LOADER
-========================================================= */
-(function(){
-  var ANIM_MS   = 3200;  /* how long the animation runs */
-  var MAX_WAIT  = 5000;  /* max ms to wait for video canplay */
-  var SLICES    = 14;
-  var loader    = document.getElementById('loader');
-  var shutter   = document.getElementById('loaderShutter');
-  var asciiEl   = document.getElementById('loaderAscii');
-  var pctEl     = document.getElementById('loaderPct');
-  var tcEl      = document.getElementById('loaderTC');
-  var terminal  = document.getElementById('loaderTerminal');
-  var BAR_W     = 20;
-  var loaderStart = Date.now();
-  var activeLine  = -1;
-  var rafId;
-  var animDone    = false;
-  var videoDone   = false;
-  var exitFired   = false;
-
-  /* Start loading hero video immediately */
-  var hv0 = document.getElementById('hv0');
-  hv0.load();
-  hv0.play().catch(function(){});
-
-  /* --- waveform canvas --- */
-  var cvs = document.getElementById('loaderWave');
-  var ctx = cvs.getContext('2d');
-  var waveFrame = 0;
-  var waveSeeds = [];
-  for(var i=0;i<120;i++) waveSeeds.push(Math.random()*Math.PI*2);
-  function resizeCvs(){
-    cvs.width  = window.innerWidth;
-    cvs.height = Math.round(window.innerHeight * 0.52);
-  }
-  resizeCvs();
-  window.addEventListener('resize', resizeCvs);
-
-  function drawWave(raw){
-    var W = cvs.width, H = cvs.height;
-    var scanX = raw * W;
-    ctx.clearRect(0,0,W,H);
-    [[0.28,14,0.012,0.03,'AUDIO_A'],[0.55,30,0.018,0.045,'VIDEO_M'],[0.78,14,0.014,0.036,'AUDIO_B']].forEach(function(cfg,ti){
-      var yFrac=cfg[0], amp=cfg[1], freq=cfg[2], spd=cfg[3], lbl=cfg[4];
-      var cy = H*yFrac;
-      function getY(x){ return cy + Math.sin(x*freq + waveFrame*spd + (waveSeeds[Math.floor(x/W*(waveSeeds.length-1))]||0))*amp + Math.sin(x*freq*2.3 + waveFrame*spd*1.4)*amp*0.35; }
-      ctx.beginPath();
-      for(var x=0;x<=W;x+=2){ x===0?ctx.moveTo(x,getY(x)):ctx.lineTo(x,getY(x)); }
-      ctx.strokeStyle='rgba(232,232,226,0.06)'; ctx.lineWidth=1; ctx.stroke();
-      if(scanX>0){
-        ctx.beginPath();
-        for(var x=0;x<=Math.min(scanX,W);x+=2){ x===0?ctx.moveTo(x,getY(x)):ctx.lineTo(x,getY(x)); }
-        ctx.strokeStyle = ti===1?'rgba(232,232,226,0.55)':'rgba(232,232,226,0.28)';
-        ctx.lineWidth = ti===1?1.5:1; ctx.stroke();
-      }
-      if(scanX>0 && scanX<W){
-        var x0=Math.max(0,scanX-40);
-        ctx.beginPath();
-        for(var x=x0;x<=scanX;x+=2){ x===x0?ctx.moveTo(x,getY(x)):ctx.lineTo(x,getY(x)); }
-        var gl=ctx.createLinearGradient(x0,0,scanX,0);
-        gl.addColorStop(0,'rgba(232,232,226,0)'); gl.addColorStop(1,'rgba(232,232,226,0.8)');
-        ctx.strokeStyle=gl; ctx.lineWidth=ti===1?2.5:1.5; ctx.stroke();
-      }
-      ctx.fillStyle='rgba(232,232,226,0.15)'; ctx.font='9px "Space Mono",monospace';
-      ctx.fillText(lbl,8,cy-amp-5);
-    });
-    if(scanX>0 && scanX<W){
-      var vg=ctx.createLinearGradient(0,0,0,H);
-      vg.addColorStop(0,'rgba(232,232,226,0)'); vg.addColorStop(0.5,'rgba(232,232,226,0.3)'); vg.addColorStop(1,'rgba(232,232,226,0)');
-      ctx.beginPath(); ctx.moveTo(scanX,0); ctx.lineTo(scanX,H);
-      ctx.strokeStyle=vg; ctx.lineWidth=1.5; ctx.stroke();
-    }
-    waveFrame++;
-  }
-
-  /* --- terminal lines --- */
-  var LINES=[
-    {text:'> SYSTEM INIT',             dur:380},
-    {text:'> LOADING ASSETS',          dur:680},
-    {text:'> MOUNTING TIMELINE',       dur:620},
-    {text:'> CALIBRATING COLOR SPACE', dur:680},
-    {text:'> RENDER READY',            dur:180},
-  ];
-  var lineEls=[];
-  LINES.forEach(function(l){
-    var el=document.createElement('div'); el.className='loader-line';
-    el.innerHTML='<span class="ll-prompt">$</span><span class="ll-text">'+l.text+'</span><span class="ll-status">--</span>';
-    terminal.appendChild(el); lineEls.push(el);
-  });
-  var lineTimings=[]; var acc=120;
-  LINES.forEach(function(l){ lineTimings.push(acc); acc+=l.dur; });
-
-  function markDone(i){ lineEls[i].classList.remove('active'); lineEls[i].classList.add('done'); lineEls[i].querySelector('.ll-status').textContent='OK'; }
-  function markActive(i){ lineEls[i].classList.add('active'); lineEls[i].querySelector('.ll-status').textContent='...'; }
-
-  function setBar(p){
-    var f=Math.round(p*BAR_W), e=BAR_W-f;
-    asciiEl.textContent='['+'█'.repeat(f)+'░'.repeat(e)+']';
-    pctEl.textContent=Math.round(p*100)+'%';
-  }
-
-  function fmtTC(ms){
-    var tot=Math.floor(ms/1000); var f=Math.floor((ms%1000)/33);
-    var s=tot%60; var m=Math.floor(tot/60)%60; var h=Math.floor(tot/3600);
-    return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+':'+String(f).padStart(2,'0');
-  }
-
-  /* --- build shutter slices --- */
-  for(var i=0;i<SLICES;i++){
-    var s=document.createElement('div'); s.className='shutter-slice';
-    var h=100/SLICES;
-    s.style.top=(i*h)+'%'; s.style.height=(h+0.15)+'%';
-    shutter.appendChild(s);
-  }
-  var sliceEls = shutter.querySelectorAll('.shutter-slice');
-
-  /* --- exit sequence --- */
-  function runExit(){
-    if(exitFired) return;
-    exitFired = true;
-    sliceEls.forEach(function(s,i){
-      setTimeout(function(){
-        s.style.transition='transform 0.36s cubic-bezier(0.7,0,1,1)';
-        s.style.transform = (i%2===0)?'translateX(-102%)':'translateX(102%)';
-      }, i*25);
-    });
-    setTimeout(function(){
-      loader.classList.add('fade-out');
-      setTimeout(function(){ loader.style.display='none'; }, 550);
-    }, SLICES*25 + 380);
-  }
-
-  /* --- gate: both anim done + video ready --- */
-  function tryExit(){
-    if(animDone && videoDone) runExit();
-  }
-
-  /* listen for video ready */
-  function onVideoReady(){
-    videoDone = true;
-    tryExit();
-  }
-  hv0.addEventListener('canplay', onVideoReady, {once:true});
-  /* hard fallback: don't wait more than MAX_WAIT total */
-  setTimeout(function(){ videoDone = true; tryExit(); }, MAX_WAIT);
-
-  /* --- main animation loop --- */
-  function tick(){
-    var elapsed = Date.now() - loaderStart;
-    var raw = Math.min(elapsed/ANIM_MS, 1);
-    var p   = raw<0.5 ? 2*raw*raw : -1+(4-2*raw)*raw;
-
-    drawWave(raw);
-    setBar(p);
-    tcEl.textContent = fmtTC(elapsed);
-
-    lineTimings.forEach(function(t,i){
-      if(elapsed>=t && activeLine<i){
-        if(activeLine>=0) markDone(activeLine);
-        activeLine=i;
-        markActive(i);
-      }
-    });
-
-    if(raw<1){ rafId=requestAnimationFrame(tick); return; }
-
-    /* animation complete */
-    cancelAnimationFrame(rafId);
-    if(activeLine>=0) markDone(activeLine);
-    setBar(1);
-    animDone = true;
-    setTimeout(function(){ tryExit(); }, 200);
-  }
-  rafId = requestAnimationFrame(tick);
-})();
-
 /* =========================================================
    CURSOR
 ========================================================= */
