@@ -105,7 +105,6 @@
       background: var(--bg);
     }
 
-    /* Background video layers — stacked, cross-fade */
     .hero-videos {
       position: absolute;
       inset: 0;
@@ -123,7 +122,6 @@
     }
     .hero-vid.active { opacity: 1; }
 
-    /* Dark overlay so text stays readable */
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -137,7 +135,6 @@
       );
     }
 
-    /* Left HUD reel numbers */
     .hero-hud {
       position: absolute;
       top: 50%;
@@ -161,7 +158,6 @@
     .reel-num.active { color: var(--text); }
     .reel-num:hover { color: var(--text-dim); }
 
-    /* Timecode */
     .hero-timecode {
       position: absolute;
       bottom: 7.5rem;
@@ -173,7 +169,6 @@
       letter-spacing: 0.08em;
     }
 
-    /* Main title + meta */
     .hero-content {
       position: absolute;
       bottom: 7rem;
@@ -231,7 +226,6 @@
     .timeline-item:last-child { border-right: none; }
     .timeline-item:hover { background: rgba(255,255,255,0.04); }
 
-    /* progress fill line at top of each item */
     .timeline-item::before {
       content: '';
       position: absolute;
@@ -241,15 +235,11 @@
       background: var(--text);
       transition: none;
     }
-    .timeline-item.active::before {
-      width: 100%;
-    }
+    .timeline-item.active::before { width: 100%; }
     .timeline-item.done::before {
       width: 100%;
       background: rgba(232,232,226,0.3);
     }
-
-    /* animated fill for active item */
     .timeline-item.animating::before {
       transition: width var(--clip-duration, 5s) linear;
     }
@@ -276,7 +266,6 @@
     .timeline-item:hover .timeline-title { color: var(--text); }
     .timeline-item.active .timeline-num { color: var(--text-dim); }
 
-    /* thumbnail strip inside each timeline item */
     .timeline-thumb {
       position: absolute;
       inset: 0;
@@ -292,7 +281,6 @@
       object-fit: cover;
     }
 
-    /* Scroll hint */
     .hero-scroll-hint {
       position: absolute;
       bottom: 4.2rem;
@@ -729,8 +717,8 @@
     <div class="hero-videos">
       <video class="hero-vid active" id="hv0" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"></video>
       <video class="hero-vid" id="hv1" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba"></video>
-      <video class="hero-vid" id="hv2" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Barren_Island_erpgyz"></video>
-      <video class="hero-vid" id="hv3" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Brocken_zd8twd"></video>
+      <video class="hero-vid" id="hv2" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k"></video>
+      <video class="hero-vid" id="hv3" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd"></video>
     </div>
 
     <!-- Cinematic overlay -->
@@ -778,14 +766,14 @@
         <span class="timeline-title">Happen Bangalore</span>
       </div>
       <div class="timeline-item" data-index="2">
-        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Barren_Island_erpgyz"></video></div>
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Tbsm_ufto4k"></video></div>
         <span class="timeline-num">003</span>
-        <span class="timeline-title">Barren Island</span>
+        <span class="timeline-title">TBSM</span>
       </div>
       <div class="timeline-item" data-index="3">
-        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Brocken_zd8twd"></video></div>
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Kodai_wmabpd"></video></div>
         <span class="timeline-num">004</span>
-        <span class="timeline-title">Brocken</span>
+        <span class="timeline-title">Kodiakannal</span>
       </div>
     </div>
 
@@ -1011,39 +999,29 @@
     setInterval(updateTimecode, 33);
 
     // ── HERO VIDEO SWITCHER ──
-    const CLIP_DURATION = 5000; // ms per clip
+    const CLIP_DURATION = 5000;
     const heroVids = Array.from(document.querySelectorAll('.hero-vid'));
     const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
     const reelNums = Array.from(document.querySelectorAll('.reel-num'));
     let currentClip = 0;
     let clipTimer = null;
-    let progressTimer = null;
 
     function activateClip(index, auto) {
-      // fade videos
       heroVids.forEach((v, i) => {
         v.classList.toggle('active', i === index);
         if (i === index) { v.currentTime = 0; v.play().catch(()=>{}); }
       });
-
-      // timeline bar state
       timelineItems.forEach((item, i) => {
         item.classList.remove('active','done','animating');
         if (i < index) item.classList.add('done');
       });
       const active = timelineItems[index];
       active.classList.add('active');
-      // force reflow then add animating so CSS transition fires
       void active.offsetWidth;
       active.classList.add('animating');
       active.style.setProperty('--clip-duration', (CLIP_DURATION/1000)+'s');
-
-      // reel nums
       reelNums.forEach((r,i) => r.classList.toggle('active', i === index));
-
       currentClip = index;
-
-      // auto advance
       clearTimeout(clipTimer);
       if (auto !== false) {
         clipTimer = setTimeout(() => {
@@ -1052,20 +1030,15 @@
       }
     }
 
-    // click on timeline item
     timelineItems.forEach((item, i) => {
       item.addEventListener('click', () => activateClip(i, true));
     });
-
-    // click on reel numbers
     reelNums.forEach((r, i) => {
       r.addEventListener('click', () => activateClip(i, true));
     });
 
-    // start
     heroVids[0].play().catch(()=>{});
     clipTimer = setTimeout(() => activateClip(1, true), CLIP_DURATION);
-    // trigger progress bar for first clip
     void timelineItems[0].offsetWidth;
     timelineItems[0].classList.add('animating');
     timelineItems[0].style.setProperty('--clip-duration', (CLIP_DURATION/1000)+'s');
