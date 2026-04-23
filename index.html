@@ -37,7 +37,6 @@
     body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke: #cc0000; }
     body:has(a:hover) .cursor polyline, body:has(button:hover) .cursor polyline { stroke: #cc0000; }
 
-    /* Noise */
     body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9997; opacity: 0.4; }
 
     ::-webkit-scrollbar { width: 3px; }
@@ -91,7 +90,6 @@
 
     /* ── ABOUT ── */
     #about { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6rem; border-top: 1px solid var(--border); align-items: start; }
-    .about-left { }
     .about-heading { font-family: var(--font-mono); font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 2.5rem; }
     .about-heading em { font-style: normal; color: var(--text); }
     .about-body p { font-family: var(--font-mono); font-size: 1rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 1.5rem; }
@@ -106,46 +104,60 @@
 
     /* ── WORKS — SCATTERED ── */
     #works { border-top: 1px solid var(--border); padding: 6rem 3rem; }
-    .works-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+    .works-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
     .works-heading { font-family: var(--font-mono); font-size: clamp(1.4rem,2.2vw,2rem); font-weight: 400; letter-spacing: -0.03em; }
     .works-count { font-family: var(--font-code); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; }
 
-    /* Scattered canvas */
     .works-scatter {
       position: relative;
       width: 100%;
-      min-height: 180vw;
+      min-height: 110vw;
     }
 
     .scatter-card {
       position: absolute;
       cursor: pointer;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.07);
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s, z-index 0s;
+      border: 1px solid rgba(255,255,255,0.09);
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
       will-change: transform;
       z-index: 1;
+      background: #111;
     }
     .scatter-card:hover {
       z-index: 10;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+      box-shadow: 0 28px 90px rgba(0,0,0,0.75);
     }
-    /* each card's base transform is set inline via JS */
 
-    .scatter-card video {
-      display: block;
+    /* cover image shown before hover */
+    .scatter-cover {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+      transition: opacity 0.4s ease;
+      z-index: 2;
+    }
+    .scatter-card.playing .scatter-cover { opacity: 0; }
+
+    .scatter-card video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
       pointer-events: none;
+      z-index: 1;
     }
 
-    /* label strip at bottom of each card */
     .scatter-label {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      padding: 0.5rem 0.8rem;
-      background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 100%);
+      padding: 0.6rem 0.8rem;
+      background: linear-gradient(to top, rgba(8,8,8,0.92) 0%, transparent 100%);
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -153,12 +165,12 @@
       transform: translateY(4px);
       transition: opacity 0.35s, transform 0.35s;
       pointer-events: none;
+      z-index: 3;
     }
     .scatter-card:hover .scatter-label { opacity: 1; transform: translateY(0); }
     .scatter-label-title { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; }
     .scatter-label-tag { font-family: var(--font-code); font-size: 0.5rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
-    /* play icon overlay on hover */
     .scatter-play {
       position: absolute;
       inset: 0;
@@ -168,72 +180,20 @@
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
+      z-index: 4;
     }
     .scatter-card:hover .scatter-play { opacity: 1; }
-    .scatter-play svg { width: 44px; height: 44px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
+    .scatter-play svg { width: 44px; height: 44px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.7)); }
 
     /* ── LIGHTBOX ── */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: rgba(0,0,0,0);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease, background 0.4s ease;
-    }
-    .lightbox.open {
-      opacity: 1;
-      pointer-events: all;
-      background: rgba(0,0,0,0.96);
-    }
-    .lightbox-inner {
-      position: relative;
-      width: min(90vw, 1200px);
-      aspect-ratio: 16/9;
-      transform: scale(0.88);
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-    }
+    .lightbox { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease, background 0.4s ease; }
+    .lightbox.open { opacity: 1; pointer-events: all; background: rgba(0,0,0,0.96); }
+    .lightbox-inner { position: relative; width: min(90vw, 1200px); aspect-ratio: 16/9; transform: scale(0.88); transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
     .lightbox.open .lightbox-inner { transform: scale(1); }
-    .lightbox-inner video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-      display: block;
-    }
-    .lightbox-close {
-      position: absolute;
-      top: -3rem;
-      right: 0;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-family: var(--font-code);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      cursor: none;
-      opacity: 0.6;
-      transition: opacity 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
+    .lightbox-inner video { width: 100%; height: 100%; object-fit: contain; background: #000; display: block; }
+    .lightbox-close { position: absolute; top: -3rem; right: 0; background: none; border: none; color: var(--text); font-family: var(--font-code); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: none; opacity: 0.6; transition: opacity 0.3s; display: flex; align-items: center; gap: 0.6rem; }
     .lightbox-close:hover { opacity: 1; }
-    .lightbox-title {
-      position: absolute;
-      bottom: -2.8rem;
-      left: 0;
-      font-family: var(--font-code);
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+    .lightbox-title { position: absolute; bottom: -2.8rem; left: 0; font-family: var(--font-code); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
     /* ── SERVICES ── */
     #services { border-top: 1px solid var(--border); }
@@ -300,7 +260,7 @@
       .about-stats { gap: 2rem; }
       #contact { padding: 6rem 1.5rem; }
       .contact-socials { gap: 1.2rem; flex-wrap: wrap; }
-      .works-scatter { min-height: 400vw; }
+      .works-scatter { min-height: 320vw; }
       .lightbox-inner { width: 95vw; }
     }
   </style>
@@ -384,8 +344,8 @@
       <span class="section-label reveal">(About)</span>
       <h2 class="about-heading reveal">Crafting frames<br/>that <em>breathe</em><br/>and speak</h2>
       <div class="about-body">
-        <p class="reveal reveal-delay-1">I’m Riju — a cinematic video editor and motion designer with a passion for transforming raw footage into visual narratives that move people. Every cut is intentional. Every frame tells a story.</p>
-        <p class="reveal reveal-delay-2">From brand films and wedding reels to music videos and documentary edits, I bring a director’s eye and an editor’s precision to every project. Based globally, working for clients worldwide.</p>
+        <p class="reveal reveal-delay-1">I'm Riju — a cinematic video editor and motion designer with a passion for transforming raw footage into visual narratives that move people. Every cut is intentional. Every frame tells a story.</p>
+        <p class="reveal reveal-delay-2">From brand films and wedding reels to music videos and documentary edits, I bring a director's eye and an editor's precision to every project. Based globally, working for clients worldwide.</p>
       </div>
       <div class="about-stats reveal reveal-delay-3">
         <div><div class="stat-num">120+</div><div class="stat-label">Projects Delivered</div></div>
@@ -407,9 +367,7 @@
       <h2 class="works-heading reveal">Selected Works</h2>
       <span class="works-count reveal">(06 Projects)</span>
     </div>
-    <div class="works-scatter" id="worksScatter">
-      <!-- Cards injected by JS -->
-    </div>
+    <div class="works-scatter" id="worksScatter"></div>
   </section>
 
   <!-- LIGHTBOX -->
@@ -444,7 +402,7 @@
     <div class="contact-bg-text">Hello</div>
     <div class="contact-inner">
       <span class="contact-label-top reveal">(Contact)</span>
-      <h2 class="contact-heading reveal">Let’s build<br/>something <em>remarkable</em></h2>
+      <h2 class="contact-heading reveal">Let's build<br/>something <em>remarkable</em></h2>
       <p class="contact-sub reveal">Available for projects worldwide</p>
       <a href="mailto:hello@visualsbyriju.com" class="contact-cta reveal">Start a Project &nbsp;→</a>
       <div class="contact-socials reveal reveal-delay-2">
@@ -511,22 +469,40 @@
 
   // ── SCATTERED WORKS ──
   const WORKS = [
-    { num:'001', title:'Coorg',            tag:'Cinematic / Travel',        year:'2024', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9',           w:480, h:270 },
-    { num:'002', title:'Happen Bangalore', tag:'Commercial / Motion',        year:'2024', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba',    w:400, h:224 },
-    { num:'003', title:'Kodiakannal',      tag:'Cinematic / Travel',         year:'2024', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd',          w:520, h:292 },
-    { num:'004', title:'TBSM',             tag:'Documentary / Narrative',    year:'2023', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k',           w:440, h:248 },
-    { num:'005', title:'Barren Island',    tag:'Adventure / Short Film',     year:'2023', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Barren_Island_erpgyz',  w:460, h:258 },
-    { num:'006', title:'Brocken',          tag:'Landscape / Cinematic',      year:'2023', src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Brocken_zd8twd',        w:500, h:280 },
+    { num:'001', title:'Coorg',            tag:'Cinematic / Travel',      year:'2024',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Coorg_rjk6y9.jpg',
+      w:440, h:248 },
+    { num:'002', title:'Happen Bangalore', tag:'Commercial / Motion',     year:'2024',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Happen_Blr_jkugba.jpg',
+      w:380, h:214 },
+    { num:'003', title:'Kodiakannal',      tag:'Cinematic / Travel',      year:'2024',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Kodai_wmabpd.jpg',
+      w:460, h:259 },
+    { num:'004', title:'TBSM',             tag:'Documentary / Narrative', year:'2023',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Tbsm_ufto4k.jpg',
+      w:400, h:225 },
+    { num:'005', title:'Barren Island',    tag:'Adventure / Short Film',  year:'2023',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Barren_Island_erpgyz',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Barren_Island_erpgyz.jpg',
+      w:420, h:236 },
+    { num:'006', title:'Brocken',          tag:'Landscape / Cinematic',   year:'2023',
+      src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Brocken_zd8twd',
+      poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Brocken_zd8twd.jpg',
+      w:450, h:253 },
   ];
 
-  // Fixed scatter positions (% of container width) so layout is deterministic & non-overlapping
+  // Tighter positions — all cards within a compact area, slight overlaps are fine
   const POSITIONS = [
-    { left: 4,  top: 2,   rot: -3  },
-    { left: 52, top: 5,   rot:  2  },
-    { left: 22, top: 22,  rot: -1.5},
-    { left: 58, top: 28,  rot:  3  },
-    { left: 3,  top: 48,  rot:  2  },
-    { left: 48, top: 52,  rot: -2.5},
+    { left:  3, top:  1, rot: -2.5 },
+    { left: 50, top:  3, rot:  2   },
+    { left: 18, top: 30, rot: -1.5 },
+    { left: 54, top: 32, rot:  3   },
+    { left:  5, top: 62, rot:  1.5 },
+    { left: 46, top: 64, rot: -2   },
   ];
 
   const scatter = document.getElementById('worksScatter');
@@ -556,23 +532,14 @@
     const pos = POSITIONS[i];
     const card = document.createElement('div');
     card.className = 'scatter-card';
-    card.style.cssText = `
-      left: ${pos.left}%;
-      top: calc(${pos.top}% + ${i * 20}px);
-      width: ${work.w}px;
-      height: ${work.h}px;
-      transform: rotate(${pos.rot}deg);
-    `;
-    card.dataset.baseRot = pos.rot;
+    card.style.cssText = `left:${pos.left}%;top:${pos.top}%;width:${work.w}px;height:${work.h}px;transform:rotate(${pos.rot}deg);`;
 
     card.innerHTML = `
-      <video muted playsinline loop preload="none"
-        src="${work.src}"
-        style="width:100%;height:100%;object-fit:cover;display:block;"
-      ></video>
+      <video muted playsinline loop preload="none" src="${work.src}"></video>
+      <img class="scatter-cover" src="${work.poster}" alt="${work.title}" loading="lazy" />
       <div class="scatter-play">
         <svg viewBox="0 0 44 44" fill="none">
-          <circle cx="22" cy="22" r="21" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+          <circle cx="22" cy="22" r="21" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
           <polygon points="17,14 33,22 17,30" fill="white"/>
         </svg>
       </div>
@@ -586,11 +553,13 @@
 
     card.addEventListener('mouseenter', () => {
       vid.play().catch(()=>{});
+      card.classList.add('playing');
       card.style.transform = `rotate(0deg) scale(1.04)`;
       card.style.zIndex = 10;
     });
     card.addEventListener('mouseleave', () => {
-      vid.pause();
+      vid.pause(); vid.currentTime = 0;
+      card.classList.remove('playing');
       card.style.transform = `rotate(${pos.rot}deg) scale(1)`;
       card.style.zIndex = 1;
     });
@@ -599,14 +568,14 @@
     scatter.appendChild(card);
     addCursorScale([card]);
 
-    // Scroll-reveal per card
+    // Scroll reveal
     const revObs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if(entry.isIntersecting) {
           setTimeout(() => {
-            card.style.transition = 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s';
+            card.style.transition = 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s';
             card.style.opacity = '1';
-          }, i * 120);
+          }, i * 100);
           revObs.unobserve(card);
         }
       });
