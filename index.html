@@ -23,7 +23,6 @@
       --text-dim: #9a9a94;
       --accent: #c8b89a;
       --border: #1e1e1a;
-      
       --font-mono: 'Space Grotesk', sans-serif;
       --font-code: 'Space Mono', monospace;
       --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -39,24 +38,17 @@
       cursor: none;
     }
 
-    /* Crosshair Viewfinder Cursor */
+    /* Crosshair Cursor */
     .cursor {
       position: fixed;
       width: 48px; height: 48px;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-    }
-    .cursor svg {
-      width: 100%; height: 100%;
-      transition: opacity 0.3s;
-    }
-    .cursor {
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .cursor-ring {
-      display: none;
-    }
+    .cursor svg { width: 100%; height: 100%; transition: opacity 0.3s; }
+    .cursor-ring { display: none; }
     body:has(a:hover) .cursor svg,
     body:has(button:hover) .cursor svg { opacity: 0.5; }
     body:has(a:hover) .cursor line,
@@ -76,10 +68,9 @@
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #cc0000; }
-    ::-webkit-scrollbar { width: 3px; }
 
     /* NAV */
     nav {
@@ -105,52 +96,54 @@
     }
     .nav-links a:hover { opacity: 0.5; }
 
-    /* HERO */
+    /* ── HERO ── */
     #hero {
       position: relative;
       width: 100vw;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
       overflow: hidden;
       background: var(--bg);
     }
-    .hero-video-bg {
+
+    /* Background video layers — stacked, cross-fade */
+    .hero-videos {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, #0f0e0c 0%, #080808 50%, #0a0c0f 100%);
+      z-index: 0;
     }
-    .hero-video-bg::after {
-      content: '';
+    .hero-vid {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(200,184,154,0.04) 0%, transparent 60%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      background: #080808;
     }
-    /* Cinematic letter overlay */
-    .hero-bg-text {
+    .hero-vid.active { opacity: 1; }
+
+    /* Dark overlay so text stays readable */
+    .hero-overlay {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: var(--font-mono);
-      font-size: clamp(7rem, 14vw, 14rem);
-      font-style: normal;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(232,232,226,0.04);
-      white-space: nowrap;
-      user-select: none;
-      pointer-events: none;
-      letter-spacing: -0.03em;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,8,8,0.35) 0%,
+        rgba(8,8,8,0.15) 40%,
+        rgba(8,8,8,0.55) 75%,
+        rgba(8,8,8,0.85) 100%
+      );
     }
+
+    /* Left HUD reel numbers */
     .hero-hud {
       position: absolute;
       top: 50%;
       left: 3rem;
       transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      z-index: 3;
     }
     .hero-reel-nums {
       display: flex;
@@ -158,7 +151,7 @@
       gap: 0.6rem;
     }
     .reel-num {
-      font-family: var(--font-mono);
+      font-family: var(--font-code);
       font-size: 0.65rem;
       color: var(--text-muted);
       cursor: pointer;
@@ -168,22 +161,27 @@
     .reel-num.active { color: var(--text); }
     .reel-num:hover { color: var(--text-dim); }
 
+    /* Timecode */
     .hero-timecode {
       position: absolute;
-      bottom: 1.8rem;
+      bottom: 7.5rem;
       left: 3rem;
-      font-family: var(--font-mono);
+      z-index: 3;
+      font-family: var(--font-code);
       font-size: 0.65rem;
       color: var(--text-muted);
       letter-spacing: 0.08em;
     }
+
+    /* Main title + meta */
     .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 3rem 4rem;
+      position: absolute;
+      bottom: 7rem;
+      left: 3rem;
+      right: 3rem;
+      z-index: 3;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
       gap: 0;
     }
     .hero-title {
@@ -193,32 +191,113 @@
       line-height: 1;
       letter-spacing: -0.03em;
       white-space: nowrap;
-      width: 100%;
-      text-align: left;
-    }
-    .hero-title em {
-      font-style: normal;
-      color: var(--accent);
     }
     .hero-meta {
       position: absolute;
-      bottom: 5.5rem;
-      right: 3rem;
+      bottom: 0;
+      right: 0;
       text-align: right;
-      z-index: 3;
     }
     .hero-meta p {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: var(--text);
+      color: rgba(232,232,226,0.7);
       letter-spacing: 0.08em;
       line-height: 1.9;
       text-transform: uppercase;
     }
+
+    /* ── TIMELINE BAR ── */
+    .hero-timeline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 4;
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8,8,8,0.6);
+      backdrop-filter: blur(6px);
+    }
+    .timeline-item {
+      flex: 1;
+      padding: 0.85rem 1.2rem;
+      cursor: pointer;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .timeline-item:last-child { border-right: none; }
+    .timeline-item:hover { background: rgba(255,255,255,0.04); }
+
+    /* progress fill line at top of each item */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--text);
+      transition: none;
+    }
+    .timeline-item.active::before {
+      width: 100%;
+    }
+    .timeline-item.done::before {
+      width: 100%;
+      background: rgba(232,232,226,0.3);
+    }
+
+    /* animated fill for active item */
+    .timeline-item.animating::before {
+      transition: width var(--clip-duration, 5s) linear;
+    }
+
+    .timeline-num {
+      font-family: var(--font-code);
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .timeline-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: rgba(232,232,226,0.5);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s;
+    }
+    .timeline-item.active .timeline-title,
+    .timeline-item:hover .timeline-title { color: var(--text); }
+    .timeline-item.active .timeline-num { color: var(--text-dim); }
+
+    /* thumbnail strip inside each timeline item */
+    .timeline-thumb {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .timeline-item.active .timeline-thumb,
+    .timeline-item:hover .timeline-thumb { opacity: 0.12; }
+    .timeline-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Scroll hint */
     .hero-scroll-hint {
       position: absolute;
-      bottom: 1.8rem;
+      bottom: 4.2rem;
       right: 3rem;
+      z-index: 3;
       font-family: var(--font-mono);
       font-size: 0.6rem;
       color: var(--text-muted);
@@ -259,8 +338,6 @@
       gap: 6rem;
       border-top: 1px solid var(--border);
     }
-    .about-left {}
-    .about-right {}
     .about-heading {
       font-family: var(--font-mono);
       font-size: clamp(2rem, 3.2vw, 3rem);
@@ -301,9 +378,7 @@
     }
 
     /* WORKS */
-    #works {
-      border-top: 1px solid var(--border);
-    }
+    #works { border-top: 1px solid var(--border); }
     .works-header {
       display: flex;
       justify-content: space-between;
@@ -316,14 +391,8 @@
       font-weight: 400;
       letter-spacing: -0.03em;
     }
-    /* Works - Scroll-pinned horizontal */
-    .works-section {
-      padding: 8rem 3rem 4rem;
-    }
-    .works-pin-container {
-      position: relative;
-      /* height set by JS: 100vh * number of slides */
-    }
+    .works-section { padding: 8rem 3rem 4rem; }
+    .works-pin-container { position: relative; }
     .works-sticky {
       position: sticky;
       top: 0;
@@ -350,40 +419,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;      /* full frame, no crop */
-      background: #080808;      /* dark bars blend into your bg */
-    }
-    .work-slide-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-    .work-slide-grain {
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-      opacity: 0.6;
-      pointer-events: none;
-    }
-    .work-slide-vignette {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
-      pointer-events: none;
-    }
-    .work-slide-placeholder-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: rgba(255,255,255,0.08);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      pointer-events: none;
+      object-fit: contain;
+      background: #080808;
     }
     .work-slide-overlay {
       position: absolute;
@@ -419,7 +456,6 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
-    /* Progress dots */
     .works-progress {
       position: absolute;
       right: 2rem;
@@ -431,8 +467,7 @@
       z-index: 10;
     }
     .works-dot {
-      width: 4px;
-      height: 4px;
+      width: 4px; height: 4px;
       border-radius: 50%;
       background: rgba(232,232,226,0.25);
       transition: background 0.3s, height 0.3s;
@@ -442,7 +477,6 @@
       height: 20px;
       border-radius: 2px;
     }
-    /* Scroll hint */
     .works-scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -462,9 +496,7 @@
     }
 
     /* SERVICES */
-    #services {
-      border-top: 1px solid var(--border);
-    }
+    #services { border-top: 1px solid var(--border); }
     .services-header {
       display: grid;
       grid-template-columns: 1fr 2fr;
@@ -532,12 +564,10 @@
     }
     .contact-bg-text {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-mono);
       font-size: clamp(5rem, 12vw, 12rem);
-      font-style: normal;
       color: transparent;
       -webkit-text-stroke: 1px rgba(232,232,226,0.03);
       white-space: nowrap;
@@ -583,14 +613,8 @@
       color: var(--text);
       text-decoration: none;
       transition: border-color 0.3s, background 0.3s, color 0.3s;
-      position: relative;
     }
-    .contact-cta:hover {
-      border-color: var(--text);
-      background: transparent;
-      color: var(--text);
-      opacity: 0.6;
-    }
+    .contact-cta:hover { border-color: var(--text); opacity: 0.6; }
     .contact-socials {
       display: flex;
       justify-content: center;
@@ -635,16 +659,13 @@
       letter-spacing: 0.08em;
     }
 
-    /* REVEAL ANIMATIONS */
+    /* REVEAL */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.9s var(--transition), transform 0.9s var(--transition);
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
@@ -660,39 +681,32 @@
       .works-sticky { margin-left: -1.5rem; }
       .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
       .service-item { grid-template-columns: 50px 1fr auto; }
-      .hero-content { padding: 0 1.5rem 3rem; }
+      .hero-content { left: 1.5rem; right: 1.5rem; }
       .hero-hud { left: 1.5rem; }
       .hero-timecode { left: 1.5rem; }
       .hero-scroll-hint { right: 1.5rem; }
-      .hero-title { font-size: clamp(2.8rem, 10vw, 3.5rem); max-width: 90vw; }
+      .hero-title { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+      .timeline-title { display: none; }
+      .timeline-item { padding: 0.85rem 0.6rem; }
       footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
       .about-stats { gap: 2rem; flex-wrap: wrap; }
       #contact { padding: 6rem 1.5rem; }
       .contact-socials { gap: 1.2rem; flex-wrap: wrap; }
     }
-    @media (max-width: 1024px) and (min-width: 769px) {
-      .works-grid { grid-template-columns: repeat(2, 1fr); }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Crosshair / Viewfinder Cursor -->
+  <!-- Cursor -->
   <div class="cursor" id="cursor">
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Horizontal line with gap in centre -->
       <line x1="0" y1="24" x2="20" y2="24" stroke="#c8c8c2" stroke-width="0.8"/>
       <line x1="28" y1="24" x2="48" y2="24" stroke="#c8c8c2" stroke-width="0.8"/>
-      <!-- Vertical line with gap in centre -->
       <line x1="24" y1="0" x2="24" y2="20" stroke="#c8c8c2" stroke-width="0.8"/>
       <line x1="24" y1="28" x2="24" y2="48" stroke="#c8c8c2" stroke-width="0.8"/>
-      <!-- Top-left corner bracket -->
       <polyline points="6,14 6,6 14,6" stroke="#c8c8c2" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-      <!-- Top-right corner bracket -->
       <polyline points="34,6 42,6 42,14" stroke="#c8c8c2" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-      <!-- Bottom-left corner bracket -->
       <polyline points="6,34 6,42 14,42" stroke="#c8c8c2" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-      <!-- Bottom-right corner bracket -->
       <polyline points="42,34 42,42 34,42" stroke="#c8c8c2" stroke-width="1.2" fill="none" stroke-linecap="square"/>
     </svg>
   </div>
@@ -710,28 +724,34 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-video-bg"></div>
-  
 
-    <!-- Reel HUD -->
+    <!-- 4 background videos, cross-fade -->
+    <div class="hero-videos">
+      <video class="hero-vid active" id="hv0" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"></video>
+      <video class="hero-vid" id="hv1" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba"></video>
+      <video class="hero-vid" id="hv2" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Barren_Island_erpgyz"></video>
+      <video class="hero-vid" id="hv3" muted playsinline preload="auto" src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Brocken_zd8twd"></video>
+    </div>
+
+    <!-- Cinematic overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Left reel HUD -->
     <div class="hero-hud">
       <div class="hero-reel-nums">
-        <span class="reel-num active" data-reel="1">001</span>
-        <span class="reel-num" data-reel="2">002</span>
-        <span class="reel-num" data-reel="3">003</span>
-        <span class="reel-num" data-reel="4">004</span>
-        <span class="reel-num" data-reel="5">005</span>
-        <span class="reel-num" data-reel="6">006</span>
+        <span class="reel-num active" data-index="0">001</span>
+        <span class="reel-num" data-index="1">002</span>
+        <span class="reel-num" data-index="2">003</span>
+        <span class="reel-num" data-index="3">004</span>
       </div>
     </div>
 
     <!-- Timecode -->
     <div class="hero-timecode" id="timecode">00:00:00:00</div>
 
+    <!-- Title + meta -->
     <div class="hero-content">
-      <h1 class="hero-title">
-        VISUALSBYRIJU
-      </h1>
+      <h1 class="hero-title">VISUALSBYRIJU</h1>
       <div class="hero-meta">
         <p>VisualsbyRiju</p>
         <p>Video Editor &amp; Motion Designer</p>
@@ -739,10 +759,36 @@
       </div>
     </div>
 
+    <!-- Scroll hint -->
     <div class="hero-scroll-hint">
       <span class="scroll-line"></span>
       Scroll
     </div>
+
+    <!-- Timeline bar -->
+    <div class="hero-timeline" id="heroTimeline">
+      <div class="timeline-item active" data-index="0">
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Coorg_rjk6y9"></video></div>
+        <span class="timeline-num">001</span>
+        <span class="timeline-title">Coorg</span>
+      </div>
+      <div class="timeline-item" data-index="1">
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Happen_Blr_jkugba"></video></div>
+        <span class="timeline-num">002</span>
+        <span class="timeline-title">Happen Bangalore</span>
+      </div>
+      <div class="timeline-item" data-index="2">
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Barren_Island_erpgyz"></video></div>
+        <span class="timeline-num">003</span>
+        <span class="timeline-title">Barren Island</span>
+      </div>
+      <div class="timeline-item" data-index="3">
+        <div class="timeline-thumb"><video muted playsinline src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4,w_320/Brocken_zd8twd"></video></div>
+        <span class="timeline-num">004</span>
+        <span class="timeline-title">Brocken</span>
+      </div>
+    </div>
+
   </section>
 
   <!-- ABOUT -->
@@ -781,24 +827,21 @@
     </div>
   </section>
 
-  <!-- WORKS - Scroll-pinned horizontal -->
+  <!-- WORKS -->
   <section id="works" class="works-section">
     <div class="works-header">
       <span class="section-label reveal">(Works)</span>
       <h2 class="works-heading reveal">Selected Projects</h2>
     </div>
-
     <div class="works-pin-container" id="worksPinContainer">
       <div class="works-sticky">
         <div class="works-track" id="worksTrack">
+
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776954694/Coorg_rjk6y9.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">001 — 2024</span>
               <div>
                 <div class="work-slide-title">Brand Identity Reel</div>
@@ -808,13 +851,10 @@
           </div>
 
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776956509/Happen_Blr_jkugba.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">002 — 2024</span>
               <div>
                 <div class="work-slide-title">Cinematic Wedding Film</div>
@@ -824,13 +864,10 @@
           </div>
 
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776956531/Kodai_wmabpd.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">003 — 2024</span>
               <div>
                 <div class="work-slide-title">Music Video Edit</div>
@@ -840,13 +877,10 @@
           </div>
 
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776956544/Tbsm_ufto4k.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">004 — 2023</span>
               <div>
                 <div class="work-slide-title">Documentary Cut</div>
@@ -856,13 +890,10 @@
           </div>
 
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776956549/Barren_Island_erpgyz.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">005 — 2023</span>
               <div>
                 <div class="work-slide-title">Fashion Campaign</div>
@@ -872,13 +903,10 @@
           </div>
 
           <div class="work-slide">
-            
-            <!-- ✅ REPLACE BELOW with your video file -->
             <video autoplay muted loop playsinline>
               <source src="https://res.cloudinary.com/dtkqhuitl/video/upload/v1776956540/Brocken_zd8twd.mp4" type="video/mp4"/>
             </video>
-            <!-- ✅ END VIDEO -->
-<div class="work-slide-overlay">
+            <div class="work-slide-overlay">
               <span class="work-slide-num">006 — 2023</span>
               <div>
                 <div class="work-slide-title">Social Media Reels</div>
@@ -888,8 +916,6 @@
           </div>
 
         </div>
-
-        <!-- Side progress dots -->
         <div class="works-progress" id="worksDots">
           <div class="works-dot active"></div>
           <div class="works-dot"></div>
@@ -898,7 +924,6 @@
           <div class="works-dot"></div>
           <div class="works-dot"></div>
         </div>
-
         <div class="works-scroll-hint">Scroll to explore</div>
       </div>
     </div>
@@ -909,9 +934,7 @@
     <div class="services-header">
       <div>
         <span class="section-label reveal">(Services)</span>
-        <h2 class="services-heading reveal">
-          What<br/><em>I do</em>
-        </h2>
+        <h2 class="services-heading reveal">What<br/><em>I do</em></h2>
       </div>
       <p class="services-desc reveal">
         Every project starts with a conversation. I work closely with clients to understand their vision, audience, and story — then I build it frame by frame.
@@ -945,14 +968,9 @@
   <section id="contact">
     <div class="contact-bg-text">Hello</div>
     <span class="contact-label-top reveal">(Contact)</span>
-    <h2 class="contact-heading reveal">
-      Let's build<br/>
-      something <em>remarkable</em>
-    </h2>
+    <h2 class="contact-heading reveal">Let's build<br/>something <em>remarkable</em></h2>
     <p class="contact-sub reveal">Available for projects worldwide</p>
-    <a href="mailto:hello@visualsbyriju.com" class="contact-cta reveal">
-      Start a Project &nbsp;→
-    </a>
+    <a href="mailto:hello@visualsbyriju.com" class="contact-cta reveal">Start a Project &nbsp;→</a>
     <div class="contact-socials reveal reveal-delay-2">
       <a href="#">Instagram</a>
       <a href="#">YouTube</a>
@@ -969,134 +987,159 @@
   </footer>
 
   <script>
-    // Crosshair cursor - no rotation, just follow mouse
+    // ── CURSOR ──
     const cursor = document.getElementById('cursor');
     document.addEventListener('mousemove', e => {
       cursor.style.left = e.clientX + 'px';
       cursor.style.top = e.clientY + 'px';
     });
+    document.querySelectorAll('a, button, .service-item, .work-slide, .timeline-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.style.transform = 'translate(-50%,-50%) scale(1.6)');
+      el.addEventListener('mouseleave', () => cursor.style.transform = 'translate(-50%,-50%) scale(1)');
+    });
 
-    // Timecode
-    let startTime = Date.now();
+    // ── TIMECODE ──
+    const startTime = Date.now();
     function updateTimecode() {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-      const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-      const s = String(elapsed % 60).padStart(2, '0');
-      const f = String(Math.floor((Date.now() % 1000) / 33)).padStart(2, '0');
-      document.getElementById('timecode').textContent = h + ':' + m + ':' + s + ':' + f;
+      const h = String(Math.floor(elapsed / 3600)).padStart(2,'0');
+      const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2,'0');
+      const s = String(elapsed % 60).padStart(2,'0');
+      const f = String(Math.floor((Date.now() % 1000) / 33)).padStart(2,'0');
+      document.getElementById('timecode').textContent = h+':'+m+':'+s+':'+f;
     }
     setInterval(updateTimecode, 33);
 
-    // Reel switcher
-    document.querySelectorAll('.reel-num').forEach(el => {
-      el.addEventListener('click', () => {
-        document.querySelectorAll('.reel-num').forEach(r => r.classList.remove('active'));
-        el.classList.add('active');
+    // ── HERO VIDEO SWITCHER ──
+    const CLIP_DURATION = 5000; // ms per clip
+    const heroVids = Array.from(document.querySelectorAll('.hero-vid'));
+    const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
+    const reelNums = Array.from(document.querySelectorAll('.reel-num'));
+    let currentClip = 0;
+    let clipTimer = null;
+    let progressTimer = null;
+
+    function activateClip(index, auto) {
+      // fade videos
+      heroVids.forEach((v, i) => {
+        v.classList.toggle('active', i === index);
+        if (i === index) { v.currentTime = 0; v.play().catch(()=>{}); }
       });
+
+      // timeline bar state
+      timelineItems.forEach((item, i) => {
+        item.classList.remove('active','done','animating');
+        if (i < index) item.classList.add('done');
+      });
+      const active = timelineItems[index];
+      active.classList.add('active');
+      // force reflow then add animating so CSS transition fires
+      void active.offsetWidth;
+      active.classList.add('animating');
+      active.style.setProperty('--clip-duration', (CLIP_DURATION/1000)+'s');
+
+      // reel nums
+      reelNums.forEach((r,i) => r.classList.toggle('active', i === index));
+
+      currentClip = index;
+
+      // auto advance
+      clearTimeout(clipTimer);
+      if (auto !== false) {
+        clipTimer = setTimeout(() => {
+          activateClip((currentClip + 1) % heroVids.length, true);
+        }, CLIP_DURATION);
+      }
+    }
+
+    // click on timeline item
+    timelineItems.forEach((item, i) => {
+      item.addEventListener('click', () => activateClip(i, true));
     });
 
-    // Frame counter (scroll synced)
+    // click on reel numbers
+    reelNums.forEach((r, i) => {
+      r.addEventListener('click', () => activateClip(i, true));
+    });
+
+    // start
+    heroVids[0].play().catch(()=>{});
+    clipTimer = setTimeout(() => activateClip(1, true), CLIP_DURATION);
+    // trigger progress bar for first clip
+    void timelineItems[0].offsetWidth;
+    timelineItems[0].classList.add('animating');
+    timelineItems[0].style.setProperty('--clip-duration', (CLIP_DURATION/1000)+'s');
+
+    // ── FRAME COUNTER ──
     window.addEventListener('scroll', () => {
-      const scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      document.getElementById('frameNum').textContent = Math.floor(scrollPct * 500);
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      document.getElementById('frameNum').textContent = Math.floor(pct * 500);
     });
 
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
+    // ── SCROLL REVEAL ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
     }, { threshold: 0.1 });
-    revealEls.forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Hero title reveal on load
+    // ── HERO TITLE REVEAL ──
     setTimeout(() => {
       document.querySelectorAll('#hero .hero-title, #hero .hero-meta').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
         el.style.transition = 'opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1)';
-        setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 100);
+        setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 100);
       });
     }, 50);
 
-    // Smooth scroll for nav links
+    // ── SMOOTH SCROLL ──
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
       });
     });
 
-    // ── TEXT SCRAMBLE EFFECT ──────────────────────────────────────────
+    // ── TEXT SCRAMBLE ──
     class TextScramble {
-      constructor(el) {
-        this.el = el;
-        this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-        this.update = this.update.bind(this);
-      }
+      constructor(el) { this.el = el; this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'; this.update = this.update.bind(this); }
       setText(newText) {
         const oldText = this.el.innerText;
         const length = Math.max(oldText.length, newText.length);
         const promise = new Promise(resolve => this.resolve = resolve);
         this.queue = [];
         for (let i = 0; i < length; i++) {
-          const from = oldText[i] || '';
-          const to = newText[i] || '';
+          const from = oldText[i] || ''; const to = newText[i] || '';
           const start = Math.floor(Math.random() * 8);
           const end = start + Math.floor(Math.random() * 10) + 4;
           this.queue.push({ from, to, start, end });
         }
-        cancelAnimationFrame(this.frameReq);
-        this.frame = 0;
-        this.update();
-        return promise;
+        cancelAnimationFrame(this.frameReq); this.frame = 0; this.update(); return promise;
       }
       update() {
-        let output = '';
-        let complete = 0;
+        let output = ''; let complete = 0;
         for (let i = 0, n = this.queue.length; i < n; i++) {
           let { from, to, start, end, char } = this.queue[i];
-          if (this.frame >= end) {
-            complete++;
-            output += to;
-          } else if (this.frame >= start) {
-            if (!char || Math.random() < 0.28) {
-              char = this.chars[Math.floor(Math.random() * this.chars.length)];
-              this.queue[i].char = char;
-            }
-            output += '<span style="color:var(--text-muted)">' + char + '</span>';
-          } else {
-            output += from;
-          }
+          if (this.frame >= end) { complete++; output += to; }
+          else if (this.frame >= start) {
+            if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; }
+            output += '<span style="color:var(--text-muted)">'+char+'</span>';
+          } else { output += from; }
         }
         this.el.innerHTML = output;
-        if (complete === this.queue.length) {
-          this.resolve();
-        } else {
-          this.frameReq = requestAnimationFrame(this.update);
-          this.frame++;
-        }
+        if (complete === this.queue.length) { this.resolve(); }
+        else { this.frameReq = requestAnimationFrame(this.update); this.frame++; }
       }
     }
-
-    // Apply scramble to all nav links, buttons, CTAs, service names
-    function applyScramble(selector) {
-      document.querySelectorAll(selector).forEach(el => {
-        const original = el.innerText.trim();
-        if (!original || original.length > 40) return; // skip long text
+    function applyScramble(sel) {
+      document.querySelectorAll(sel).forEach(el => {
+        const orig = el.innerText.trim();
+        if (!orig || orig.length > 40) return;
         const fx = new TextScramble(el);
-        el.addEventListener('mouseenter', () => fx.setText(original));
-        el.addEventListener('mouseleave', () => {
-          el.innerText = original;
-        });
+        el.addEventListener('mouseenter', () => fx.setText(orig));
+        el.addEventListener('mouseleave', () => { el.innerText = orig; });
       });
     }
-
     applyScramble('.nav-links a');
     applyScramble('.contact-cta');
     applyScramble('.service-name');
@@ -1104,80 +1147,47 @@
     applyScramble('.contact-socials a');
     applyScramble('.footer-name');
 
-    // ── CURSOR CROSSHAIR SCALE ON HOVER ──────────────────────────────
-    const cursorEl = document.getElementById('cursor');
-    document.querySelectorAll('a, button, .service-item, .work-slide').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        if (cursorEl) cursorEl.style.transform = 'translate(-50%, -50%) scale(1.6)';
-      });
-      el.addEventListener('mouseleave', () => {
-        if (cursorEl) cursorEl.style.transform = 'translate(-50%, -50%) scale(1)';
-      });
-    });
-
-    // Scroll-pinned horizontal works
+    // ── WORKS HORIZONTAL SCROLL PIN ──
     (function() {
-      const pinContainer = document.getElementById('worksPinContainer');
+      const pin = document.getElementById('worksPinContainer');
       const track = document.getElementById('worksTrack');
       const dots = document.querySelectorAll('.works-dot');
-      if (!pinContainer || !track) return;
-
+      if (!pin || !track) return;
       const slides = track.querySelectorAll('.work-slide');
-      const slideCount = slides.length;
-
-      // Set pin container height = slideCount * 100vh so scroll space equals slides
-      pinContainer.style.height = (slideCount * 100) + 'vh';
-
-      let currentSlide = 0;
-      let targetX = 0;
-      let currentX = 0;
-      let isAnimating = false;
-
-      function goToSlide(index) {
-        index = Math.max(0, Math.min(slideCount - 1, index));
-        currentSlide = index;
-        targetX = index * window.innerWidth;
-        dots.forEach((d, i) => d.classList.toggle('active', i === index));
-        if (!isAnimating) animateTo();
+      const count = slides.length;
+      pin.style.height = (count * 100) + 'vh';
+      let current = 0, targetX = 0, currentX = 0, animating = false;
+      function goTo(i) {
+        i = Math.max(0, Math.min(count-1, i));
+        current = i; targetX = i * window.innerWidth;
+        dots.forEach((d,j) => d.classList.toggle('active', j===i));
+        if (!animating) animate();
       }
-
-      function animateTo() {
-        isAnimating = true;
-        function step() {
+      function animate() {
+        animating = true;
+        (function step() {
           currentX += (targetX - currentX) * 0.08;
-          if (Math.abs(targetX - currentX) < 0.5) {
-            currentX = targetX;
-            track.style.transform = `translateX(-${currentX}px)`;
-            isAnimating = false;
-            return;
-          }
+          if (Math.abs(targetX - currentX) < 0.5) { currentX = targetX; track.style.transform = `translateX(-${currentX}px)`; animating = false; return; }
           track.style.transform = `translateX(-${currentX}px)`;
           requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+        })();
       }
-
       window.addEventListener('scroll', () => {
-        const rect = pinContainer.getBoundingClientRect();
-        const containerTop = window.scrollY + rect.top;
-        const scrolled = window.scrollY - containerTop;
-        const sectionHeight = pinContainer.offsetHeight - window.innerHeight;
-        if (scrolled < 0 || scrolled > sectionHeight) return;
-        const progress = scrolled / sectionHeight;
-        const slideIndex = Math.round(progress * (slideCount - 1));
-        if (slideIndex !== currentSlide) goToSlide(slideIndex);
+        const rect = pin.getBoundingClientRect();
+        const top = window.scrollY + rect.top;
+        const scrolled = window.scrollY - top;
+        const max = pin.offsetHeight - window.innerHeight;
+        if (scrolled < 0 || scrolled > max) return;
+        const idx = Math.round((scrolled / max) * (count - 1));
+        if (idx !== current) goTo(idx);
       });
-
-      // Keyboard navigation
       window.addEventListener('keydown', e => {
-        const rect = pinContainer.getBoundingClientRect();
-        if (rect.top > window.innerHeight || rect.bottom < 0) return;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goToSlide(currentSlide + 1);
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goToSlide(currentSlide - 1);
+        const r = pin.getBoundingClientRect();
+        if (r.top > window.innerHeight || r.bottom < 0) return;
+        if (e.key==='ArrowRight'||e.key==='ArrowDown') goTo(current+1);
+        if (e.key==='ArrowLeft'||e.key==='ArrowUp') goTo(current-1);
       });
     })();
-
-
   </script>
 </body>
 </html>
