@@ -19,6 +19,78 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--font-mono); overflow-x: hidden; cursor: none; }
 
+    /* ===================== LOADER ===================== */
+    #loader {
+      position: fixed; inset: 0; z-index: 99999;
+      background: #000; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 2.5rem 2.8rem;
+      font-family: 'Space Mono', monospace; overflow: hidden;
+    }
+    /* scanline sweep */
+    #loader::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(255,255,255,0.018) 3px, rgba(255,255,255,0.018) 4px
+      );
+      z-index: 1;
+    }
+    /* moving scan beam */
+    #loader::after {
+      content: ''; position: absolute; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to bottom, transparent, rgba(200,255,200,0.035), transparent);
+      animation: scanBeam 2.4s linear infinite; pointer-events: none; z-index: 2;
+    }
+    @keyframes scanBeam { from { top: -120px; } to { top: 100%; } }
+
+    .loader-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      position: relative; z-index: 3;
+    }
+    .loader-sys-id {
+      font-size: 0.6rem; color: rgba(200,255,200,0.5); letter-spacing: 0.18em; line-height: 1.8;
+    }
+    .loader-version {
+      font-size: 0.6rem; color: rgba(200,255,200,0.35); letter-spacing: 0.12em; text-align: right; line-height: 1.8;
+    }
+    .loader-timecode {
+      font-size: 1.1rem; color: rgba(200,255,200,0.9); letter-spacing: 0.08em; margin-top: 0.4rem;
+    }
+
+    .loader-terminal {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 2rem 0; position: relative; z-index: 3;
+    }
+    .loader-line {
+      font-size: 0.68rem; color: rgba(200,255,200,0.0); letter-spacing: 0.1em;
+      line-height: 2; display: flex; gap: 1rem; align-items: center;
+      transition: color 0.2s;
+    }
+    .loader-line.visible { color: rgba(200,255,200,0.7); }
+    .loader-line .ll-label { min-width: 280px; }
+    .loader-line .ll-status { color: rgba(200,255,200,0.0); font-size: 0.62rem; letter-spacing: 0.12em; }
+    .loader-line.ok .ll-status { color: #4ade80; }
+    .loader-line.pending .ll-status { color: rgba(200,255,200,0.5); }
+
+    .loader-bottom { position: relative; z-index: 3; }
+    .loader-bar-label {
+      font-size: 0.55rem; color: rgba(200,255,200,0.4); letter-spacing: 0.14em;
+      margin-bottom: 0.5rem; display: flex; justify-content: space-between;
+    }
+    .loader-bar-wrap {
+      font-size: 0.65rem; color: rgba(200,255,200,0.8); letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    #loaderBarText { display: inline-block; }
+    #loaderPct { color: rgba(200,255,200,0.9); margin-left: 0.8rem; }
+
+    /* shutter slices */
+    .shutter-slice {
+      position: absolute; left: 0; right: 0; background: #000;
+      transition: transform 0.55s cubic-bezier(0.7,0,1,1); z-index: 4;
+    }
+
     /* ===================== CURSOR ===================== */
     .cursor { position: fixed; width: 48px; height: 48px; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
     body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke: #cc0000; }
@@ -168,10 +240,46 @@
       #contact{padding:6rem 1.5rem} .contact-socials{gap:1.2rem;flex-wrap:wrap}
       .works-scatter{min-height:280vw}
       .lightbox-inner{width:95vw}
+      #loader { padding: 1.8rem 1.5rem; }
+      .loader-line .ll-label { min-width: 200px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-top">
+      <div class="loader-sys-id">
+        <div>VBR_SYS v2.4.1</div>
+        <div>RENDER ENGINE ONLINE</div>
+        <div class="loader-timecode" id="loaderTimecode">00:00:00:00</div>
+      </div>
+      <div class="loader-version">
+        <div>VISUALSBYRIJU</div>
+        <div>CODEC :: H.264 / AAC</div>
+        <div>RES :: 4K UHD</div>
+      </div>
+    </div>
+
+    <div class="loader-terminal" id="loaderTerminal">
+      <div class="loader-line" id="ll0"><span class="ll-label">&gt; SYSTEM INIT</span><span class="ll-status">...</span></div>
+      <div class="loader-line" id="ll1"><span class="ll-label">&gt; LOADING ASSETS</span><span class="ll-status">...</span></div>
+      <div class="loader-line" id="ll2"><span class="ll-label">&gt; MOUNTING TIMELINE</span><span class="ll-status">...</span></div>
+      <div class="loader-line" id="ll3"><span class="ll-label">&gt; CALIBRATING COLOR SPACE</span><span class="ll-status">...</span></div>
+      <div class="loader-line" id="ll4"><span class="ll-label">&gt; RENDER READY</span><span class="ll-status">...</span></div>
+    </div>
+
+    <div class="loader-bottom">
+      <div class="loader-bar-label">
+        <span>LOADING SEQUENCE</span>
+        <span id="loaderPct">0%</span>
+      </div>
+      <div class="loader-bar-wrap">
+        <span id="loaderBarText">[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+      </div>
+    </div>
+  </div>
 
   <!-- CURSOR -->
   <div class="cursor" id="cursor">
@@ -327,6 +435,114 @@
   </footer>
 
 <script>
+/* =========================================================
+   LOADER
+========================================================= */
+(function(){
+  var loader = document.getElementById('loader');
+  var TOTAL_DUR = 3500; // 3.5s
+  var SLICES = 14;
+
+  // timecode on loader
+  var loaderStart = Date.now();
+  var loaderTC = setInterval(function(){
+    var e = Date.now() - loaderStart;
+    var ms = e % 1000, s = Math.floor(e/1000) % 60, m = Math.floor(e/60000) % 60, h = Math.floor(e/3600000);
+    var f = String(Math.floor(ms/33)).padStart(2,'0');
+    document.getElementById('loaderTimecode').textContent =
+      String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+':'+f;
+  }, 33);
+
+  // terminal lines schedule (ms)
+  var LINES = [
+    { id:'ll0', showAt:200,  okAt:600  },
+    { id:'ll1', showAt:700,  okAt:1150 },
+    { id:'ll2', showAt:1200, okAt:1650 },
+    { id:'ll3', showAt:1700, okAt:2200 },
+    { id:'ll4', showAt:2300, okAt:2700 },
+  ];
+
+  LINES.forEach(function(l){
+    setTimeout(function(){
+      var el = document.getElementById(l.id);
+      el.classList.add('visible','pending');
+    }, l.showAt);
+    setTimeout(function(){
+      var el = document.getElementById(l.id);
+      el.classList.remove('pending');
+      el.classList.add('ok');
+      el.querySelector('.ll-status').textContent = '[ OK ]';
+    }, l.okAt);
+  });
+
+  // progress bar (40 chars wide)
+  var BAR_WIDTH = 40;
+  var barEl = document.getElementById('loaderBarText');
+  var pctEl = document.getElementById('loaderPct');
+  var barStart = Date.now();
+  var barInterval = setInterval(function(){
+    var progress = Math.min((Date.now() - barStart) / (TOTAL_DUR - 600), 1);
+    var filled = Math.round(progress * BAR_WIDTH);
+    var empty = BAR_WIDTH - filled;
+    var bar = '[' + '\u2588'.repeat(filled) + '\u2591'.repeat(empty) + ']';
+    barEl.textContent = bar;
+    pctEl.textContent = Math.round(progress * 100) + '%';
+    if(progress >= 1) clearInterval(barInterval);
+  }, 40);
+
+  // shutter wipe exit
+  function shutterExit(){
+    clearInterval(loaderTC);
+    clearInterval(barInterval);
+
+    var sliceH = window.innerHeight / SLICES;
+    var slices = [];
+    for(var i = 0; i < SLICES; i++){
+      var s = document.createElement('div');
+      s.className = 'shutter-slice';
+      s.style.top = (i * sliceH) + 'px';
+      s.style.height = sliceH + 'px';
+      loader.appendChild(s);
+      slices.push({ el: s, dir: i % 2 === 0 ? -1 : 1 });
+    }
+
+    // trigger reflow then animate
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        slices.forEach(function(sl){
+          sl.el.style.transform = 'translateX(' + (sl.dir * 110) + '%)';
+        });
+      });
+    });
+
+    // after slices clear, hide loader
+    setTimeout(function(){
+      loader.style.opacity = '0';
+      loader.style.transition = 'opacity 0.25s ease';
+      setTimeout(function(){
+        loader.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 280);
+    }, 500);
+  }
+
+  // gate: wait for animation done AND video canplay (or 5s fallback)
+  var animDone = false, videoDone = false;
+  function tryExit(){
+    if(animDone && videoDone) shutterExit();
+  }
+
+  setTimeout(function(){ animDone = true; tryExit(); }, TOTAL_DUR);
+
+  var hv0 = document.getElementById('hv0');
+  function onVideoReady(){ videoDone = true; tryExit(); }
+  hv0.addEventListener('canplay', onVideoReady, { once: true });
+  setTimeout(onVideoReady, 5000); // hard fallback
+
+  // lock scroll while loader is up
+  document.body.style.overflow = 'hidden';
+})();
+
 /* =========================================================
    CURSOR
 ========================================================= */
