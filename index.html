@@ -127,7 +127,7 @@
     .works-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
     .works-heading { font-family:var(--font-mono); font-size:clamp(1.4rem,2.2vw,2rem); font-weight:400; letter-spacing:-0.03em; }
     .works-count { font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; }
-    .works-scatter { position:relative; width:100%; min-height:135vw; }
+    .works-scatter { position:relative; width:100%; min-height:100px; }
     .scatter-card { position:absolute; cursor:pointer; overflow:hidden; border:1px solid rgba(255,255,255,.09); transition:transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s; will-change:transform; z-index:1; background:#111; }
     .scatter-card:hover { z-index:10; box-shadow:0 28px 90px rgba(0,0,0,.75); }
     .scatter-cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:opacity 0.4s ease; z-index:2; }
@@ -571,13 +571,13 @@ var WORKS=[
   {num:'014',title:'Farebi',tag:'Music Video / Reel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777047915/Farebi_zwlks5.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Farebi_zwlks5.jpg',w:200,h:356},
 ];
 var POSITIONS=[
-  {left:3,top:0,rot:-2.5},{left:51,top:2,rot:2},
-  {left:16,top:18,rot:-1.5},{left:53,top:20,rot:3},
-  {left:4,top:38,rot:1.5},{left:49,top:40,rot:-2},
-  {left:18,top:58,rot:-2},{left:54,top:60,rot:2.5},
-  {left:5,top:78,rot:1},{left:52,top:80,rot:-1.5},
-  {left:17,top:98,rot:-1},{left:72,top:2,rot:2},
-  {left:73,top:40,rot:-1.5},{left:74,top:78,rot:1.5},
+  {left:3,top:20,rot:-2.5},{left:46,top:20,rot:2},
+  {left:3,top:320,rot:-1.5},{left:46,top:320,rot:3},
+  {left:3,top:620,rot:1.5},{left:46,top:620,rot:-2},
+  {left:3,top:920,rot:-2},{left:46,top:920,rot:2.5},
+  {left:3,top:1220,rot:1},{left:46,top:1220,rot:-1.5},
+  {left:3,top:1520,rot:-1},{left:78,top:20,rot:2},
+  {left:78,top:440,rot:-1.5},{left:78,top:860,rot:1.5},
 ]
 var lightbox=document.getElementById('lightbox');
 var lbVid=document.getElementById('lightboxVid');
@@ -593,7 +593,7 @@ var scatter=document.getElementById('worksScatter');
 WORKS.forEach(function(work,i){
   var pos=POSITIONS[i];
   var card=document.createElement('div');card.className='scatter-card';
-  card.style.cssText='left:'+pos.left+'%;top:'+pos.top+'%;width:'+work.w+'px;height:'+work.h+'px;transform:rotate('+pos.rot+'deg);';
+  card.style.cssText='left:'+pos.left+'%;top:'+pos.top+'px;width:'+work.w+'px;height:'+work.h+'px;transform:rotate('+pos.rot+'deg);';
   card.innerHTML='<video muted playsinline loop preload="none" src="'+work.src+'"></video><img class="scatter-cover" src="'+work.poster+'" alt="'+work.title+'" loading="lazy"/><div class="scatter-play"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="21" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><polygon points="17,14 33,22 17,30" fill="white"/></svg></div><div class="scatter-label"><span class="scatter-label-title">'+work.title+'</span><span class="scatter-label-tag">'+work.tag+'</span></div>';
   var vid=card.querySelector('video');
   card.addEventListener('mouseenter',function(){vid.play().catch(function(){});card.classList.add('playing');card.style.transform='rotate(0deg) scale(1.05)';card.style.zIndex=10;});
@@ -603,6 +603,7 @@ WORKS.forEach(function(work,i){
   var ro=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){setTimeout(function(){card.style.transition='opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s';card.style.opacity='1';},i*100);ro.unobserve(card);}});},{threshold:0.05});
   card.style.opacity='0';card.style.transition='none';ro.observe(card);
 });
+  (function(){var cards=scatter.querySelectorAll('.scatter-card');var maxBottom=0;cards.forEach(function(c){var b=parseInt(c.style.top)+parseInt(c.style.height);if(b>maxBottom)maxBottom=b;});scatter.style.height=(maxBottom+80)+'px';})();
 
 var grid=document.getElementById('worksGrid');
 WORKS.forEach(function(work){
