@@ -102,8 +102,6 @@
     .hero-scroll-hint { position:absolute; bottom:5rem; right:2rem; z-index:3; font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; display:flex; align-items:center; gap:0.8rem; }
     .scroll-line { width:40px; height:1px; background:var(--text-muted); transform-origin:left; animation:scrollLine 2s ease-in-out infinite; }
     @keyframes scrollLine { 0%,100%{transform:scaleX(1);opacity:.5} 50%{transform:scaleX(.3);opacity:1} }
-
-    /* mobile-only tagline block — hidden on desktop */
     .hero-mobile-tagline { display:none; }
 
     /* ===================== SHARED ===================== */
@@ -198,6 +196,20 @@
     .footer-name { font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; }
     .footer-frame { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
     .footer-copy { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
+    .footer-sig {
+      font-family: var(--font-code);
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .footer-sig:hover { opacity: 1; }
+    .footer-sig span {
+      color: #cc0000;
+      font-style: normal;
+    }
 
     /* ===================== REVEAL ===================== */
     .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.9s var(--transition),transform 0.9s var(--transition); }
@@ -224,98 +236,23 @@
       section { padding:4rem 1.5rem; }
       #works { padding:4rem 1.5rem 3rem; }
 
-      /* --- HERO MOBILE LAYOUT --- */
-      .hero-vid {
-        object-fit: contain;
-        object-position: center top;
-      }
-
-      /* gradient melts video into info zone from ~55% down */
-      .hero-overlay {
-        background: linear-gradient(
-          to bottom,
-          rgba(8,8,8,0) 0%,
-          rgba(8,8,8,0) 50%,
-          rgba(8,8,8,.75) 68%,
-          rgba(8,8,8,1) 80%
-        );
-      }
-
-      /* title: big, single line, sits just above timeline bar */
-      .hero-content {
-        bottom: 6.2rem;
-        left: 1.5rem;
-        right: 1.5rem;
-      }
-      .hero-title {
-        font-size: 11vw;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: clip;
-        letter-spacing: -0.04em;
-      }
-
-      /* timecode above title */
-      .hero-timecode {
-        display: block;
-        left: 1.5rem;
-        bottom: 12rem;
-        font-size: 0.55rem;
-      }
-
-      /* tagline text block sits between video bottom and timecode */
-      .hero-mobile-tagline {
-        display: block;
-        position: absolute;
-        z-index: 3;
-        bottom: 14.5rem;
-        left: 1.5rem;
-        right: 1.5rem;
-        font-family: var(--font-code);
-        font-size: 0.6rem;
-        color: rgba(232,232,226,0.4);
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        line-height: 1.8;
-      }
-      .hero-mobile-tagline span {
-        display: inline-block;
-        margin-right: 0.6rem;
-      }
-      .hero-mobile-tagline span::before {
-        content: '—';
-        margin-right: 0.4rem;
-        color: rgba(200,0,0,0.5);
-      }
-
-      /* hide desktop-only elements */
+      .hero-vid { object-fit:contain; object-position:center top; }
+      .hero-overlay { background:linear-gradient(to bottom,rgba(8,8,8,0) 0%,rgba(8,8,8,0) 50%,rgba(8,8,8,.75) 68%,rgba(8,8,8,1) 80%); }
+      .hero-content { bottom:6.2rem; left:1.5rem; right:1.5rem; }
+      .hero-title { font-size:11vw; white-space:nowrap; overflow:hidden; text-overflow:clip; letter-spacing:-0.04em; }
+      .hero-timecode { display:block; left:1.5rem; bottom:12rem; font-size:0.55rem; }
+      .hero-mobile-tagline { display:block; position:absolute; z-index:3; bottom:14.5rem; left:1.5rem; right:1.5rem; font-family:var(--font-code); font-size:0.6rem; color:rgba(232,232,226,0.4); letter-spacing:0.14em; text-transform:uppercase; line-height:1.8; }
+      .hero-mobile-tagline span { display:inline-block; margin-right:0.6rem; }
+      .hero-mobile-tagline span::before { content:'—'; margin-right:0.4rem; color:rgba(200,0,0,0.5); }
       .hero-hud { display:none; }
       .hero-scroll-hint { display:none; }
       .hero-meta { display:none; }
+      .hero-timeline { background:rgba(8,8,8,.9); }
+      .timeline-item { padding:1.1rem 0.65rem 0.9rem; }
+      .timeline-num { font-size:0.5rem; margin-bottom:0.35rem; display:block; }
+      .timeline-title { display:block; font-size:0.62rem; color:rgba(232,232,226,.4); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .timeline-item.active .timeline-title { color:var(--text); }
 
-      /* --- TIMELINE BAR: taller, richer --- */
-      .hero-timeline {
-        background: rgba(8,8,8,.9);
-      }
-      .timeline-item {
-        padding: 1.1rem 0.65rem 0.9rem;
-      }
-      .timeline-num {
-        font-size: 0.5rem;
-        margin-bottom: 0.35rem;
-        display: block;
-      }
-      .timeline-title {
-        display: block;
-        font-size: 0.62rem;
-        color: rgba(232,232,226,.4);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .timeline-item.active .timeline-title { color: var(--text); }
-
-      /* rest of mobile */
       .about-stats { gap:1.5rem; }
       .stat-num { font-size:1.8rem; }
       .works-grid { grid-template-columns:1fr; }
@@ -408,12 +345,9 @@
       <span class="reel-num" data-index="3">004</span>
     </div></div>
     <div class="hero-timecode" id="timecode">00:00:00:00</div>
-
-    <!-- tagline block: only visible on mobile, fills the gap -->
     <div class="hero-mobile-tagline">
       <span>Video Editor</span><span>Videography</span><span>Photography</span>
     </div>
-
     <div class="hero-content">
       <h1 class="hero-title" id="heroTitle">VISUALSBYRIJU</h1>
       <div class="hero-meta" id="heroMeta">
@@ -523,6 +457,7 @@
     <div class="footer-name">VisualsbyRiju</div>
     <div class="footer-frame">Rendering frame <span id="frameNum">0</span> of 500</div>
     <div class="footer-copy">&#169; 2026 VisualsbyRiju. All rights reserved.</div>
+    <div class="footer-sig">Designed &amp; Built by <span>MDJK</span></div>
   </footer>
 
 <script>
