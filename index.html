@@ -44,10 +44,16 @@
 
     /* ===================== NAV ===================== */
     nav { position:fixed; top:0; left:0; right:0; z-index:1000; padding:1.5rem 2rem; display:flex; justify-content:space-between; align-items:center; }
-    .nav-logo { font-family:var(--font-code); font-size:0.7rem; color:var(--text); letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; }
-    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+
+    /* Desktop: hide logo, spread links across full width */
+    .nav-logo { display:none; }
+    .nav-links {
+      display:flex; list-style:none;
+      width:100%; justify-content:space-around;
+    }
     .nav-links a { font-family:var(--font-mono); font-size:0.75rem; color:var(--text); text-decoration:none; letter-spacing:0.12em; text-transform:uppercase; transition:opacity 0.3s; }
     .nav-links a:hover { opacity:0.5; }
+
     .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:1001; }
     .nav-burger span { display:block; width:24px; height:1.5px; background:var(--text); transition:transform 0.35s, opacity 0.35s; transform-origin:center; }
     .nav-burger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
@@ -73,8 +79,6 @@
     .reel-num.active { color:var(--text); } .reel-num:hover { color:var(--text-dim); }
     .hero-timecode { position:absolute; bottom:8.5rem; left:2rem; z-index:3; font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.08em; }
     .hero-content { position:absolute; bottom:8rem; left:2rem; right:2rem; z-index:3; }
-
-    /* hero title — starts invisible, scramble JS reveals it */
     .hero-title {
       font-family:var(--font-mono); font-size:clamp(2rem,9vw,12rem); font-weight:700;
       line-height:1; letter-spacing:-0.03em; white-space:nowrap; overflow:hidden;
@@ -82,7 +86,6 @@
     }
     .hero-title .scramble-char { display:inline-block; transition:color 0.08s; }
     .hero-title .scramble-char.glitch { color: #cc0000; }
-
     .hero-meta { position:absolute; bottom:0; right:0; text-align:right; opacity:0; transition:opacity 1s ease 0.4s; }
     .hero-meta p { font-family:var(--font-mono); font-size:clamp(0.5rem,1.2vw,0.65rem); color:rgba(232,232,226,.7); letter-spacing:0.08em; line-height:1.9; text-transform:uppercase; }
     .hero-timeline { position:absolute; bottom:0; left:0; right:0; z-index:4; display:flex; border-top:1px solid rgba(255,255,255,.08); background:rgba(8,8,8,.6); backdrop-filter:blur(6px); }
@@ -213,7 +216,9 @@
     /* ===================== MOBILE ===================== */
     @media(max-width:600px){
       body { cursor:auto; }
-      nav { padding:1.2rem 1.5rem; }
+      nav { padding:1.2rem 1.5rem; justify-content:space-between; }
+      /* restore logo on mobile */
+      .nav-logo { display:block; font-family:var(--font-code); font-size:0.7rem; color:var(--text); letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; }
       .nav-links { display:none; }
       .nav-burger { display:flex; }
       section { padding:4rem 1.5rem; }
@@ -454,7 +459,7 @@
       setTimeout(function(){
         loader.style.display='none';
         document.body.style.overflow='';
-        startHeroScramble(); /* trigger title scramble after loader gone */
+        startHeroScramble();
       },600);
     },200);
   }
@@ -476,16 +481,13 @@ function startHeroScramble(){
   var metaEl  = document.getElementById('heroMeta');
   var TARGET  = 'VISUALSBYRIJU';
   var CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*';
-  var FRAME_DURATION = 38; /* ms per animation frame */
-  var RESOLVE_START  = 4;  /* frames before a char starts locking */
-  var RESOLVE_SPREAD = 3;  /* extra random frames per char */
-  var TOTAL_SCRAMBLE = 28; /* total frames of scramble before all lock */
+  var FRAME_DURATION = 38;
+  var RESOLVE_START  = 4;
+  var RESOLVE_SPREAD = 3;
 
-  /* make title visible, empty it */
   titleEl.style.opacity = '1';
   titleEl.textContent = '';
 
-  /* build per-char state */
   var chars = TARGET.split('').map(function(ch, i){
     return {
       final: ch,
@@ -513,8 +515,7 @@ function startHeroScramble(){
     frame++;
     if(allLocked){
       clearInterval(interval);
-      titleEl.innerHTML = TARGET; /* clean final state */
-      /* fade in meta */
+      titleEl.innerHTML = TARGET;
       metaEl.style.opacity = '1';
     }
   }, FRAME_DURATION);
@@ -658,7 +659,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 });
 
 /* =========================================================
-   TEXT SCRAMBLE (hover on nav/CTAs)
+   TEXT SCRAMBLE (hover)
 ========================================================= */
 function TextScramble(el){this.el=el;this.chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';this.update=this.update.bind(this);}
 TextScramble.prototype.setText=function(t){var old=this.el.innerText,len=Math.max(old.length,t.length);var p=new Promise(function(r){this.resolve=r;}.bind(this));this.queue=[];for(var i=0;i<len;i++){var s=Math.floor(Math.random()*8),e=s+Math.floor(Math.random()*10)+4;this.queue.push({from:old[i]||'',to:t[i]||'',start:s,end:e});}cancelAnimationFrame(this.frameReq);this.frame=0;this.update();return p;};
