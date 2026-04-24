@@ -103,6 +103,9 @@
     .scroll-line { width:40px; height:1px; background:var(--text-muted); transform-origin:left; animation:scrollLine 2s ease-in-out infinite; }
     @keyframes scrollLine { 0%,100%{transform:scaleX(1);opacity:.5} 50%{transform:scaleX(.3);opacity:1} }
 
+    /* mobile-only tagline block — hidden on desktop */
+    .hero-mobile-tagline { display:none; }
+
     /* ===================== SHARED ===================== */
     section { padding:6rem 2rem; }
     .section-label { font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1.5rem; display:block; }
@@ -221,44 +224,68 @@
       section { padding:4rem 1.5rem; }
       #works { padding:4rem 1.5rem 3rem; }
 
-      /* --- HERO MOBILE: video top, content bottom --- */
-      #hero { height:100svh; display:flex; flex-direction:column; }
-
-      /* video pushed to top, contain so full frame shows */
+      /* --- HERO MOBILE LAYOUT --- */
       .hero-vid {
-        object-fit:contain;
-        object-position:center top;
+        object-fit: contain;
+        object-position: center top;
       }
 
-      /* gradient only fades bottom edge into info zone */
+      /* gradient melts video into info zone from ~55% down */
       .hero-overlay {
         background: linear-gradient(
           to bottom,
           rgba(8,8,8,0) 0%,
-          rgba(8,8,8,0) 45%,
-          rgba(8,8,8,.7) 65%,
+          rgba(8,8,8,0) 50%,
+          rgba(8,8,8,.75) 68%,
           rgba(8,8,8,1) 80%
         );
       }
 
-      /* title: sits in lower third, above timeline */
+      /* title: big, single line, sits just above timeline bar */
       .hero-content {
-        bottom: 7.5rem;
+        bottom: 6.2rem;
         left: 1.5rem;
         right: 1.5rem;
       }
       .hero-title {
-        font-size: clamp(1.8rem, 8vw, 3.2rem);
-        white-space: normal;
-        word-break: break-word;
+        font-size: 11vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        letter-spacing: -0.04em;
       }
 
-      /* timecode: show it, reposition above title */
+      /* timecode above title */
       .hero-timecode {
         display: block;
         left: 1.5rem;
-        bottom: 13.5rem;
+        bottom: 12rem;
         font-size: 0.55rem;
+      }
+
+      /* tagline text block sits between video bottom and timecode */
+      .hero-mobile-tagline {
+        display: block;
+        position: absolute;
+        z-index: 3;
+        bottom: 14.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        font-family: var(--font-code);
+        font-size: 0.6rem;
+        color: rgba(232,232,226,0.4);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        line-height: 1.8;
+      }
+      .hero-mobile-tagline span {
+        display: inline-block;
+        margin-right: 0.6rem;
+      }
+      .hero-mobile-tagline span::before {
+        content: '—';
+        margin-right: 0.4rem;
+        color: rgba(200,0,0,0.5);
       }
 
       /* hide desktop-only elements */
@@ -266,29 +293,29 @@
       .hero-scroll-hint { display:none; }
       .hero-meta { display:none; }
 
-      /* --- TIMELINE BAR: taller, titles visible --- */
+      /* --- TIMELINE BAR: taller, richer --- */
       .hero-timeline {
-        background: rgba(8,8,8,.85);
+        background: rgba(8,8,8,.9);
       }
       .timeline-item {
-        padding: 0.9rem 0.6rem 0.75rem;
+        padding: 1.1rem 0.65rem 0.9rem;
       }
       .timeline-num {
         font-size: 0.5rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.35rem;
+        display: block;
       }
-      /* show titles again on mobile */
       .timeline-title {
         display: block;
-        font-size: 0.6rem;
-        color: rgba(232,232,226,.45);
+        font-size: 0.62rem;
+        color: rgba(232,232,226,.4);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .timeline-item.active .timeline-title { color: var(--text); }
 
-      /* rest of mobile styles */
+      /* rest of mobile */
       .about-stats { gap:1.5rem; }
       .stat-num { font-size:1.8rem; }
       .works-grid { grid-template-columns:1fr; }
@@ -381,6 +408,12 @@
       <span class="reel-num" data-index="3">004</span>
     </div></div>
     <div class="hero-timecode" id="timecode">00:00:00:00</div>
+
+    <!-- tagline block: only visible on mobile, fills the gap -->
+    <div class="hero-mobile-tagline">
+      <span>Video Editor</span><span>Videography</span><span>Photography</span>
+    </div>
+
     <div class="hero-content">
       <h1 class="hero-title" id="heroTitle">VISUALSBYRIJU</h1>
       <div class="hero-meta" id="heroMeta">
