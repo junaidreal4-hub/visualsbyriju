@@ -303,16 +303,20 @@
     <div class="hero-videos">
       <video class="hero-vid active" id="hv0" muted playsinline preload="auto"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Coorg_rjk6y9.jpg"
-        src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"></video>
+        data-src-desktop="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9"
+        data-src-mobile="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto:low,f_mp4,w_640/Coorg_rjk6y9"></video>
       <video class="hero-vid" id="hv1" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Happen_Blr_jkugba.jpg"
-        src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba"></video>
+        data-src-desktop="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba"
+        data-src-mobile="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto:low,f_mp4,w_640/Happen_Blr_jkugba"></video>
       <video class="hero-vid" id="hv2" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Tbsm_ufto4k.jpg"
-        src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k"></video>
+        data-src-desktop="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k"
+        data-src-mobile="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto:low,f_mp4,w_640/Tbsm_ufto4k"></video>
       <video class="hero-vid" id="hv3" muted playsinline preload="none"
         poster="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,so_1/Kodai_wmabpd.jpg"
-        src="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd"></video>
+        data-src-desktop="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd"
+        data-src-mobile="https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto:low,f_mp4,w_640/Kodai_wmabpd"></video>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-hud"><div class="hero-reel-nums">
@@ -434,6 +438,21 @@
   </footer>
 
 <script>
+/* ── MOBILE VIDEO SRC SWAP ─────────────────────────────────────────────────
+   On screens ≤ 600px swap every hero video to the lightweight Cloudinary
+   w_640,q_auto:low variant BEFORE the loader starts, so the browser never
+   requests the full-res file on mobile.
+   Also drops preload to "metadata" on mobile to avoid eager buffering.
+──────────────────────────────────────────────────────────────────────────── */
+(function(){
+  var isMobile = window.matchMedia('(max-width:600px)').matches;
+  document.querySelectorAll('.hero-vid').forEach(function(v){
+    var src = isMobile ? v.dataset.srcMobile : v.dataset.srcDesktop;
+    if(src) v.src = src;
+    if(isMobile) v.preload = 'metadata';
+  });
+})();
+
 (function(){
   var loader=document.getElementById('loader');
   var fill=document.getElementById('loaderBarFill');
