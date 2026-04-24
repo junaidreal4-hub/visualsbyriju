@@ -127,7 +127,7 @@
     .works-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
     .works-heading { font-family:var(--font-mono); font-size:clamp(1.4rem,2.2vw,2rem); font-weight:400; letter-spacing:-0.03em; }
     .works-count { font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; }
-    .works-scatter { position:relative; width:100%; min-height:78vw; }
+    .works-scatter { position:relative; width:100%; min-height:135vw; }
     .scatter-card { position:absolute; cursor:pointer; overflow:hidden; border:1px solid rgba(255,255,255,.09); transition:transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s; will-change:transform; z-index:1; background:#111; }
     .scatter-card:hover { z-index:10; box-shadow:0 28px 90px rgba(0,0,0,.75); }
     .scatter-cover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:opacity 0.4s ease; z-index:2; }
@@ -559,15 +559,26 @@ var WORKS=[
   {num:'002',title:'Happen Bangalore',tag:'Commercial / Motion',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Happen_Blr_jkugba.jpg',w:360,h:202},
   {num:'003',title:'Kodiakannal',tag:'Cinematic / Travel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Kodai_wmabpd',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Kodai_wmabpd.jpg',w:440,h:248},
   {num:'004',title:'TBSM',tag:'Documentary / Narrative',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Tbsm_ufto4k',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Tbsm_ufto4k.jpg',w:380,h:214},
-  {num:'005',title:'Barren Island',tag:'Adventure / Short Film',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Barren_Island_erpgyz',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Barren_Island_erpgyz.jpg',w:400,h:225},
+  {num:'005',title:'Barren Island',tag:'Adventure / Short Film',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777048011/Barrenisland_etxlpn.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Barrenisland_etxlpn.jpg',w:400,h:225},
   {num:'006',title:'Brocken',tag:'Landscape / Cinematic',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Brocken_zd8twd',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Brocken_zd8twd.jpg',w:430,h:242},
+  {num:'007',title:'North Sikkim',tag:'Travel / Nature',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777048364/Northsikkim_fcoytf.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Northsikkim_fcoytf.jpg',w:410,h:231},
+  {num:'008',title:'645',tag:'Urban / Travel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777047994/645_v9ujxh.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/645_v9ujxh.jpg',w:390,h:219},
+  {num:'009',title:'Eibsee',tag:'Landscape / Cinematic',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777047992/Eibsee_q0dp5u.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Eibsee_q0dp5u.jpg',w:435,h:245},
+  {num:'010',title:'Random Eve',tag:'Lifestyle / Cinematic',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777047959/Randomeve_mqk5of.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Randomeve_mqk5of.jpg',w:405,h:228},
+  {num:'011',title:'Woodhouse',tag:'Architecture / Cinematic',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777048000/Woodhouse_fqqnim.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Woodhouse_fqqnim.jpg',w:425,h:239},
+  {num:'012',title:'Island Mix',tag:'Travel / Reel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777048038/Islandmix_gwlrkq.mov',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Islandmix_gwlrkq.jpg',w:200,h:356},
+  {num:'013',title:'Spotify',tag:'Commercial / Reel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777048031/spotify_pisyo5.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/spotify_pisyo5.jpg',w:200,h:356},
+  {num:'014',title:'Farebi',tag:'Music Video / Reel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/v1777047915/Farebi_zwlks5.mp4',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Farebi_zwlks5.jpg',w:200,h:356},
 ];
 var POSITIONS=[
   {left:3,top:0,rot:-2.5},{left:51,top:2,rot:2},
-  {left:16,top:34,rot:-1.5},{left:53,top:36,rot:3},
-  {left:4,top:67,rot:1.5},{left:49,top:69,rot:-2},
-];
-
+  {left:16,top:18,rot:-1.5},{left:53,top:20,rot:3},
+  {left:4,top:38,rot:1.5},{left:49,top:40,rot:-2},
+  {left:18,top:58,rot:-2},{left:54,top:60,rot:2.5},
+  {left:5,top:78,rot:1},{left:52,top:80,rot:-1.5},
+  {left:17,top:98,rot:-1},{left:72,top:2,rot:2},
+  {left:73,top:40,rot:-1.5},{left:74,top:78,rot:1.5},
+]
 var lightbox=document.getElementById('lightbox');
 var lbVid=document.getElementById('lightboxVid');
 var lbTitle=document.getElementById('lightboxTitle');
