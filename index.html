@@ -34,7 +34,7 @@
     .loader-bar-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #cc0000; transition: width 0.08s linear; }
     .loader-frame-text { font-family: 'Space Mono', monospace; font-size: clamp(0.55rem, 1vw, 0.65rem); color: rgba(232,232,226,0.45); letter-spacing: 0.04em; margin-top: 0.4rem; }
 
-    /* ===================== CURSOR (desktop only) ===================== */
+    /* ===================== CURSOR ===================== */
     .cursor { position: fixed; width: 48px; height: 48px; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); display: none; }
     @media (hover: hover) and (pointer: fine) { .cursor { display: block; } body { cursor: none; } }
     body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke: #cc0000; }
@@ -48,15 +48,11 @@
     .nav-links { display:flex; gap:2.5rem; list-style:none; }
     .nav-links a { font-family:var(--font-mono); font-size:0.75rem; color:var(--text); text-decoration:none; letter-spacing:0.12em; text-transform:uppercase; transition:opacity 0.3s; }
     .nav-links a:hover { opacity:0.5; }
-
-    /* hamburger */
     .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:1001; }
     .nav-burger span { display:block; width:24px; height:1.5px; background:var(--text); transition:transform 0.35s, opacity 0.35s; transform-origin:center; }
     .nav-burger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
     .nav-burger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
     .nav-burger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
-
-    /* mobile drawer */
     .nav-drawer { position:fixed; inset:0; background:rgba(8,8,8,0.97); backdrop-filter:blur(12px); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
     .nav-drawer.open { opacity:1; pointer-events:all; }
     .nav-drawer a { font-family:var(--font-mono); font-size:clamp(1.6rem,6vw,2.4rem); color:var(--text); text-decoration:none; letter-spacing:0.06em; text-transform:uppercase; font-weight:400; transition:opacity 0.3s; }
@@ -77,8 +73,17 @@
     .reel-num.active { color:var(--text); } .reel-num:hover { color:var(--text-dim); }
     .hero-timecode { position:absolute; bottom:8.5rem; left:2rem; z-index:3; font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.08em; }
     .hero-content { position:absolute; bottom:8rem; left:2rem; right:2rem; z-index:3; }
-    .hero-title { font-family:var(--font-mono); font-size:clamp(2rem,9vw,12rem); font-weight:700; line-height:1; letter-spacing:-0.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .hero-meta { position:absolute; bottom:0; right:0; text-align:right; }
+
+    /* hero title — starts invisible, scramble JS reveals it */
+    .hero-title {
+      font-family:var(--font-mono); font-size:clamp(2rem,9vw,12rem); font-weight:700;
+      line-height:1; letter-spacing:-0.03em; white-space:nowrap; overflow:hidden;
+      text-overflow:ellipsis; opacity:0;
+    }
+    .hero-title .scramble-char { display:inline-block; transition:color 0.08s; }
+    .hero-title .scramble-char.glitch { color: #cc0000; }
+
+    .hero-meta { position:absolute; bottom:0; right:0; text-align:right; opacity:0; transition:opacity 1s ease 0.4s; }
     .hero-meta p { font-family:var(--font-mono); font-size:clamp(0.5rem,1.2vw,0.65rem); color:rgba(232,232,226,.7); letter-spacing:0.08em; line-height:1.9; text-transform:uppercase; }
     .hero-timeline { position:absolute; bottom:0; left:0; right:0; z-index:4; display:flex; border-top:1px solid rgba(255,255,255,.08); background:rgba(8,8,8,.6); backdrop-filter:blur(6px); }
     .timeline-item { flex:1; padding:0.85rem 0.8rem; cursor:pointer; border-right:1px solid rgba(255,255,255,.06); position:relative; overflow:hidden; transition:background 0.3s; }
@@ -120,8 +125,6 @@
     .works-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
     .works-heading { font-family:var(--font-mono); font-size:clamp(1.4rem,2.2vw,2rem); font-weight:400; letter-spacing:-0.03em; }
     .works-count { font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; }
-
-    /* Desktop scatter */
     .works-scatter { position:relative; width:100%; min-height:78vw; }
     .scatter-card { position:absolute; cursor:pointer; overflow:hidden; border:1px solid rgba(255,255,255,.09); transition:transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s; will-change:transform; z-index:1; background:#111; }
     .scatter-card:hover { z-index:10; box-shadow:0 28px 90px rgba(0,0,0,.75); }
@@ -135,8 +138,6 @@
     .scatter-play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s; pointer-events:none; z-index:4; }
     .scatter-card:hover .scatter-play { opacity:1; }
     .scatter-play svg { width:44px; height:44px; filter:drop-shadow(0 2px 10px rgba(0,0,0,.7)); }
-
-    /* Mobile grid */
     .works-grid { display:none; grid-template-columns:1fr 1fr; gap:1rem; }
     .grid-card { position:relative; cursor:pointer; overflow:hidden; border:1px solid rgba(255,255,255,.09); background:#111; aspect-ratio:16/9; }
     .grid-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s; }
@@ -199,7 +200,7 @@
     .reveal.visible { opacity:1; transform:translateY(0); }
     .reveal-delay-1{transition-delay:.1s} .reveal-delay-2{transition-delay:.2s} .reveal-delay-3{transition-delay:.3s}
 
-    /* ===================== TABLET (max 900px) ===================== */
+    /* ===================== TABLET ===================== */
     @media(max-width:900px){
       .services-header { grid-template-columns:1fr; gap:1.5rem; margin-bottom:3rem; }
       #about { grid-template-columns:1fr; gap:3rem; }
@@ -209,7 +210,7 @@
       .works-grid { display:grid; }
     }
 
-    /* ===================== MOBILE (max 600px) ===================== */
+    /* ===================== MOBILE ===================== */
     @media(max-width:600px){
       body { cursor:auto; }
       nav { padding:1.2rem 1.5rem; }
@@ -319,8 +320,8 @@
     </div></div>
     <div class="hero-timecode" id="timecode">00:00:00:00</div>
     <div class="hero-content">
-      <h1 class="hero-title">VISUALSBYRIJU</h1>
-      <div class="hero-meta">
+      <h1 class="hero-title" id="heroTitle">VISUALSBYRIJU</h1>
+      <div class="hero-meta" id="heroMeta">
         <p>VisualsbyRiju</p><p>Video Editor &amp; Motion Designer</p><p>Premium Reels &amp; Films</p>
       </div>
     </div>
@@ -374,9 +375,7 @@
       <h2 class="works-heading reveal">Selected Works</h2>
       <span class="works-count reveal">(06 Projects)</span>
     </div>
-    <!-- Desktop scatter -->
     <div class="works-scatter" id="worksScatter"></div>
-    <!-- Mobile/tablet grid -->
     <div class="works-grid" id="worksGrid"></div>
   </section>
 
@@ -439,28 +438,87 @@
   var loader=document.getElementById('loader');
   var fill=document.getElementById('loaderBarFill');
   var label=document.getElementById('loaderFrameText');
-  var TOTAL=500,DURATION=3000,start=Date.now(),raf;
+  var TOTAL=500,DURATION=3000,start=Date.now();
   document.body.style.overflow='hidden';
+
   function tick(){
     var elapsed=Date.now()-start,progress=Math.min(elapsed/DURATION,1),frame=Math.round(progress*TOTAL);
     fill.style.width=(progress*100)+'%';
     label.textContent='Rendering frame '+frame+' of '+TOTAL+'.';
-    if(progress<1){raf=requestAnimationFrame(tick);}else{done();}
+    if(progress<1){requestAnimationFrame(tick);}else{done();}
   }
+
   function done(){
     setTimeout(function(){
       loader.style.opacity='0';
-      setTimeout(function(){loader.style.display='none';document.body.style.overflow='';},600);
+      setTimeout(function(){
+        loader.style.display='none';
+        document.body.style.overflow='';
+        startHeroScramble(); /* trigger title scramble after loader gone */
+      },600);
     },200);
   }
+
   var animDone=false,videoDone=false;
-  function tryStart(){if(animDone&&videoDone){raf=requestAnimationFrame(tick);}}
+  function tryStart(){if(animDone&&videoDone){requestAnimationFrame(tick);}}
   setTimeout(function(){animDone=true;tryStart();},120);
   var hv0=document.getElementById('hv0');
   function onVideoReady(){if(!videoDone){videoDone=true;tryStart();}}
   hv0.addEventListener('canplay',onVideoReady,{once:true});
   setTimeout(onVideoReady,5000);
 })();
+
+/* =========================================================
+   HERO TITLE SCRAMBLE ON LOAD
+========================================================= */
+function startHeroScramble(){
+  var titleEl = document.getElementById('heroTitle');
+  var metaEl  = document.getElementById('heroMeta');
+  var TARGET  = 'VISUALSBYRIJU';
+  var CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*';
+  var FRAME_DURATION = 38; /* ms per animation frame */
+  var RESOLVE_START  = 4;  /* frames before a char starts locking */
+  var RESOLVE_SPREAD = 3;  /* extra random frames per char */
+  var TOTAL_SCRAMBLE = 28; /* total frames of scramble before all lock */
+
+  /* make title visible, empty it */
+  titleEl.style.opacity = '1';
+  titleEl.textContent = '';
+
+  /* build per-char state */
+  var chars = TARGET.split('').map(function(ch, i){
+    return {
+      final: ch,
+      lockAt: RESOLVE_START + i * RESOLVE_SPREAD + Math.floor(Math.random()*3),
+      current: CHARS[Math.floor(Math.random()*CHARS.length)],
+      locked: false
+    };
+  });
+
+  var frame = 0;
+  var interval = setInterval(function(){
+    var html = '';
+    var allLocked = true;
+    chars.forEach(function(c){
+      if(frame >= c.lockAt){
+        c.locked = true;
+        html += '<span class="scramble-char">' + c.final + '</span>';
+      } else {
+        allLocked = false;
+        c.current = CHARS[Math.floor(Math.random()*CHARS.length)];
+        html += '<span class="scramble-char glitch">' + c.current + '</span>';
+      }
+    });
+    titleEl.innerHTML = html;
+    frame++;
+    if(allLocked){
+      clearInterval(interval);
+      titleEl.innerHTML = TARGET; /* clean final state */
+      /* fade in meta */
+      metaEl.style.opacity = '1';
+    }
+  }, FRAME_DURATION);
+}
 
 /* =========================================================
    MOBILE NAV DRAWER
@@ -475,7 +533,7 @@ burger.addEventListener('click',function(){
 document.querySelectorAll('.drawer-link').forEach(function(a){a.addEventListener('click',closeDrawer);});
 
 /* =========================================================
-   CURSOR (desktop only)
+   CURSOR
 ========================================================= */
 var cursor=document.getElementById('cursor');
 document.addEventListener('mousemove',function(e){cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
@@ -550,7 +608,7 @@ lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightb
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
 
 /* =========================================================
-   DESKTOP SCATTER WORKS
+   DESKTOP SCATTER
 ========================================================= */
 var scatter=document.getElementById('worksScatter');
 WORKS.forEach(function(work,i){
@@ -568,7 +626,7 @@ WORKS.forEach(function(work,i){
 });
 
 /* =========================================================
-   MOBILE GRID WORKS
+   MOBILE GRID
 ========================================================= */
 var grid=document.getElementById('worksGrid');
 WORKS.forEach(function(work){
@@ -593,17 +651,6 @@ window.addEventListener('scroll',function(){
 });
 
 /* =========================================================
-   HERO TITLE REVEAL
-========================================================= */
-setTimeout(function(){
-  document.querySelectorAll('#hero .hero-title,#hero .hero-meta').forEach(function(el){
-    el.style.opacity='0';el.style.transform='translateY(20px)';
-    el.style.transition='opacity 1.2s cubic-bezier(0.16,1,0.3,1),transform 1.2s cubic-bezier(0.16,1,0.3,1)';
-    setTimeout(function(){el.style.opacity='1';el.style.transform='translateY(0)';},100);
-  });
-},50);
-
-/* =========================================================
    SMOOTH SCROLL
 ========================================================= */
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
@@ -611,7 +658,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 });
 
 /* =========================================================
-   TEXT SCRAMBLE
+   TEXT SCRAMBLE (hover on nav/CTAs)
 ========================================================= */
 function TextScramble(el){this.el=el;this.chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';this.update=this.update.bind(this);}
 TextScramble.prototype.setText=function(t){var old=this.el.innerText,len=Math.max(old.length,t.length);var p=new Promise(function(r){this.resolve=r;}.bind(this));this.queue=[];for(var i=0;i<len;i++){var s=Math.floor(Math.random()*8),e=s+Math.floor(Math.random()*10)+4;this.queue.push({from:old[i]||'',to:t[i]||'',start:s,end:e});}cancelAnimationFrame(this.frameReq);this.frame=0;this.update();return p;};
