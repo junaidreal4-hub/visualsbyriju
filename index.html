@@ -131,19 +131,28 @@
     }
     .gear-camera-wrap {
       width: 100%;
-      overflow: hidden;
-      border: 1px solid var(--border);
+      overflow: visible;
+      border: none;
+      background: transparent;
+      animation: cameraFloat 4s ease-in-out infinite;
     }
     .gear-camera-wrap img {
       width: 100%;
       height: auto;
       display: block;
-      filter: grayscale(15%) contrast(1.05);
+      filter: grayscale(15%) contrast(1.05) drop-shadow(0 20px 40px rgba(0,0,0,0.5));
       transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
     }
     .gear-camera-wrap:hover img {
-      transform: scale(1.03);
-      filter: grayscale(0%) contrast(1.05);
+      transform: scale(1.04);
+      filter: grayscale(0%) contrast(1.05) drop-shadow(0 28px 55px rgba(0,0,0,0.65));
+    }
+    @keyframes cameraFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+    }
+    .gear-camera-wrap:hover {
+      animation-play-state: paused;
     }
     .gear-tools-row {
       display: grid;
