@@ -130,29 +130,22 @@
       gap: 2.5rem;
     }
     .gear-camera-wrap {
-      width: 100%;
+      width: 120%;
+      margin-left: -10%;
       overflow: visible;
       border: none;
       background: transparent;
-      animation: cameraFloat 4s ease-in-out infinite;
     }
     .gear-camera-wrap img {
       width: 100%;
       height: auto;
       display: block;
-      filter: grayscale(15%) contrast(1.05) drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+      filter: grayscale(15%) contrast(1.05) drop-shadow(0 24px 50px rgba(0,0,0,0.55));
       transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
     }
     .gear-camera-wrap:hover img {
       transform: scale(1.04);
-      filter: grayscale(0%) contrast(1.05) drop-shadow(0 28px 55px rgba(0,0,0,0.65));
-    }
-    @keyframes cameraFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-14px); }
-    }
-    .gear-camera-wrap:hover {
-      animation-play-state: paused;
+      filter: grayscale(0%) contrast(1.05) drop-shadow(0 32px 65px rgba(0,0,0,0.7));
     }
     .gear-tools-row {
       display: grid;
@@ -167,17 +160,12 @@
       padding: 1.2rem 0.8rem;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.02);
-      transition: border-color 0.3s, background 0.3s;
-      animation: toolFloat 3s ease-in-out infinite;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
     }
-    .gear-tool-item:nth-child(1){animation-delay:0s}
-    .gear-tool-item:nth-child(2){animation-delay:0.4s}
-    .gear-tool-item:nth-child(3){animation-delay:0.8s}
-    .gear-tool-item:nth-child(4){animation-delay:1.2s}
     .gear-tool-item:hover {
       border-color: rgba(232,232,226,0.2);
       background: rgba(255,255,255,0.06);
-      animation-play-state: paused;
+      transform: translateY(-4px);
     }
     .gear-tool-item img {
       width: 36px;
@@ -194,10 +182,6 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       text-align: center;
-    }
-    @keyframes toolFloat {
-      0%,100% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
     }
     .gear-desc {
       display: flex;
@@ -248,12 +232,14 @@
     }
     @media (max-width: 900px) {
       .gear-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .gear-camera-wrap { width: 100%; margin-left: 0; }
     }
     @media (max-width: 600px) {
       #gear { padding: 4rem 1.5rem; }
       .gear-tools-row { grid-template-columns: repeat(4,1fr); gap: 0.6rem; }
       .gear-tool-item { padding: 0.9rem 0.4rem; }
       .gear-tool-item img { width: 28px; height: 28px; }
+      .gear-camera-wrap { width: 100%; margin-left: 0; }
     }
 
     /* ===================== WORKS ===================== */
