@@ -113,125 +113,141 @@
     .about-photo-wrap:hover img { transform:scale(1.04); filter:grayscale(0%) contrast(1.05); }
     .about-photo-label { position:absolute; bottom:1rem; left:1rem; font-family:var(--font-code); font-size:0.55rem; color:rgba(232,232,226,.5); letter-spacing:0.1em; text-transform:uppercase; background:rgba(8,8,8,.6); padding:0.3rem 0.6rem; backdrop-filter:blur(4px); }
 
-
-      /* ===================== GEAR & TOOLS ===================== */
-  
-  #gear {
-    border-top: 1px solid var(--border);
-    padding: 6rem 2rem;
-  }
-  
-    /* ==================== GEAR & TOOLS ==================== */
-
-.gear-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Camera Section */
-.gear-camera {
-  width: 100%;
-  max-width: 600px;
-  display: flex;
-  justify-content: center;
-}
-
-.camera-img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease;
-}
-
-.camera-img:hover {
-  transform: scale(1.02);
-}
-
-/* Floating Tool Icons */
-.tools-floating {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.tool-icon-float {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.05);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.3s ease;
-  animation: float 3s ease-in-out infinite;
-}
-
-.tool-icon-float:nth-child(1) { animation-delay: 0s; }
-.tool-icon-float:nth-child(2) { animation-delay: 0.3s; }
-.tool-icon-float:nth-child(3) { animation-delay: 0.6s; }
-.tool-icon-float:nth-child(4) { animation-delay: 0.9s; }
-
-.tool-icon-float:hover {
-  transform: translateY(-10px);
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.3);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.tool-icon-float img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  filter: brightness(0.9);
-  transition: filter 0.3s ease;
-}
-
-.tool-icon-float:hover img {
-  filter: brightness(1.2);
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-
-  /* Gear & Tools - Tablet */
-  @media (max-width: 900px) {
-    .gear-grid {
-      grid-template-columns: 1fr;
-      gap: 3rem;
+    /* ===================== GEAR & TOOLS ===================== */
+    #gear { border-top:1px solid var(--border); padding:6rem 2rem; }
+    .gear-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-  }
-  
-  /* Gear & Tools - Mobile */
-  @media (max-width: 600px) {
-    #gear {
-      padding: 4rem 1.5rem;
-    }
-    
-    .gear-grid {
+    /* LEFT: visuals column */
+    .gear-visuals {
+      display: flex;
+      flex-direction: column;
       gap: 2.5rem;
     }
-    
-    .tools-grid {
-      grid-template-columns: 1fr;
+    .gear-camera-wrap {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .gear-camera-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(15%) contrast(1.05);
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
+    }
+    .gear-camera-wrap:hover img {
+      transform: scale(1.03);
+      filter: grayscale(0%) contrast(1.05);
+    }
+    .gear-tools-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
     }
-    
-    .gear-photo-wrap {
-      aspect-ratio: 16/9;
+    .gear-tool-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1.2rem 0.8rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.3s, background 0.3s;
+      animation: toolFloat 3s ease-in-out infinite;
     }
-  }
+    .gear-tool-item:nth-child(1){animation-delay:0s}
+    .gear-tool-item:nth-child(2){animation-delay:0.4s}
+    .gear-tool-item:nth-child(3){animation-delay:0.8s}
+    .gear-tool-item:nth-child(4){animation-delay:1.2s}
+    .gear-tool-item:hover {
+      border-color: rgba(232,232,226,0.2);
+      background: rgba(255,255,255,0.06);
+    }
+    .gear-tool-item img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: brightness(0.85);
+      transition: filter 0.3s;
+    }
+    .gear-tool-item:hover img { filter: brightness(1.15); }
+    .gear-tool-name {
+      font-family: var(--font-code);
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    @keyframes toolFloat {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    /* RIGHT: description column */
+    .gear-desc {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .gear-heading {
+      font-family: var(--font-mono);
+      font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+    .gear-heading em { font-style: normal; }
+    .gear-body p {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .gear-specs {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+    .gear-spec-row {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .gear-spec-key {
+      font-family: var(--font-code);
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .gear-spec-val {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+    /* Responsive gear */
+    @media (max-width: 900px) {
+      .gear-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 600px) {
+      #gear { padding: 4rem 1.5rem; }
+      .gear-tools-row { grid-template-columns: repeat(4,1fr); gap: 0.6rem; }
+      .gear-tool-item { padding: 0.9rem 0.4rem; }
+      .gear-tool-item img { width: 28px; height: 28px; }
+    }
+
     /* ===================== WORKS ===================== */
     #works { border-top:1px solid var(--border); padding:6rem 2rem 4rem; }
     .works-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
@@ -567,33 +583,75 @@
     </div>
   </section>
 
-    <!-- ===================== GEAR & TOOLS ===================== -->
-  
-  <section id="gear" class="reveal">
-    <span class="section-label">(Gear & Tools)</span>
-    <div class="gear-grid">
-    
-      
-      <!-- Camera Section -->
-      <div class="gear-camera">
-        <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777117962/Gemini_Generated_Image_vors6cvors6cvors_g2gjhw.png" alt="Camera" class="camera-img">
+  <!-- GEAR & TOOLS -->
+  <section id="gear">
+    <span class="section-label reveal">(Gear &amp; Tools)</span>
+    <div class="gear-layout">
+
+      <!-- LEFT: Camera image + tool icons -->
+      <div class="gear-visuals reveal">
+        <div class="gear-camera-wrap">
+          <img
+            src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777117962/Gemini_Generated_Image_vors6cvors6cvors_g2gjhw.png"
+            alt="Camera setup"
+            loading="lazy"
+          />
+        </div>
+        <div class="gear-tools-row">
+          <div class="gear-tool-item">
+            <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/davinci-resolve-12-seeklogo_z8fshw.svg" alt="DaVinci Resolve" />
+            <span class="gear-tool-name">DaVinci</span>
+          </div>
+          <div class="gear-tool-item">
+            <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/canva-icon_dcr1is.svg" alt="Canva" />
+            <span class="gear-tool-name">Canva</span>
+          </div>
+          <div class="gear-tool-item">
+            <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/capcut-icon_y5rczv.svg" alt="CapCut" />
+            <span class="gear-tool-name">CapCut</span>
+          </div>
+          <div class="gear-tool-item">
+            <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/adobe-lightroom-icon_zohxnp.svg" alt="Lightroom" />
+            <span class="gear-tool-name">Lightroom</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Floating Tool Icons -->
-      <div class="tools-floating">
-        <div class="tool-icon-float">
-          <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/davinci-resolve-12-seeklogo_z8fshw.svg" alt="DaVinci Resolve">
+      <!-- RIGHT: Description -->
+      <div class="gear-desc reveal reveal-delay-2">
+        <h2 class="gear-heading">The tools behind<br/>every <em>frame</em></h2>
+        <div class="gear-body">
+          <p>Every great visual story starts with the right equipment. From the camera body to the editing suite, each tool in my workflow is chosen with intention — built for precision, speed, and cinematic quality.</p>
+          <p>I shoot on a mirrorless setup optimised for dynamic range and low-light performance, then bring footage to life in DaVinci Resolve for colour grading and CapCut for motion-forward reels. Lightroom handles all still photography post-processing.</p>
         </div>
-        <div class="tool-icon-float">
-          <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/canva-icon_dcr1is.svg" alt="Canva">
-        </div>
-        <div class="tool-icon-float">
-          <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/capcut-icon_y5rczv.svg" alt="CapCut">
-        </div>
-        <div class="tool-icon-float">
-          <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777122727/adobe-lightroom-icon_zohxnp.svg" alt="Lightroom">
+        <div class="gear-specs">
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Camera</span>
+            <span class="gear-spec-val">Sony ZV-E10 / A7 Series</span>
+          </div>
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Stabilisation</span>
+            <span class="gear-spec-val">DJI OM6 Gimbal</span>
+          </div>
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Editing</span>
+            <span class="gear-spec-val">DaVinci Resolve &middot; CapCut</span>
+          </div>
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Photo Post</span>
+            <span class="gear-spec-val">Adobe Lightroom</span>
+          </div>
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Design</span>
+            <span class="gear-spec-val">Canva Pro</span>
+          </div>
+          <div class="gear-spec-row">
+            <span class="gear-spec-key">Export</span>
+            <span class="gear-spec-val">4K &middot; H.264 / H.265</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
