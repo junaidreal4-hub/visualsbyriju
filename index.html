@@ -113,6 +113,8 @@
     .about-photo-wrap img { width:100%; height:100%; object-fit:cover; filter:grayscale(20%) contrast(1.05); transition:transform 0.8s cubic-bezier(0.16,1,0.3,1),filter 0.6s; }
     .about-photo-wrap:hover img { transform:scale(1.04); filter:grayscale(0%) contrast(1.05); }
     .about-photo-label { position:absolute; bottom:1rem; left:1rem; font-family:var(--font-code); font-size:0.55rem; color:rgba(232,232,226,.5); letter-spacing:0.1em; text-transform:uppercase; background:rgba(8,8,8,.6); padding:0.3rem 0.6rem; backdrop-filter:blur(4px); }
+    .about-location { display:inline-flex; align-items:center; gap:0.5rem; margin-top:1.8rem; font-family:var(--font-code); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; }
+    .about-location svg { width:10px; height:10px; stroke:#cc0000; fill:none; flex-shrink:0; }
 
     /* ===================== GEAR & TOOLS ===================== */
     #gear { border-top:1px solid var(--border); padding:6rem 2rem; }
@@ -391,6 +393,8 @@
     .footer-name { font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; }
     .footer-frame { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
     .footer-copy { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
+    .footer-location { display:inline-flex; align-items:center; gap:0.4rem; font-family:var(--font-code); font-size:0.55rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; }
+    .footer-location svg { width:9px; height:9px; stroke:#cc0000; fill:none; flex-shrink:0; }
     .footer-sig { font-family:var(--font-code); font-size:0.55rem; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; opacity:0.5; transition:opacity 0.3s; }
     .footer-sig:hover { opacity:1; }
     .footer-sig span { color:#cc0000; font-style:normal; }
@@ -426,7 +430,7 @@
       .hero-timecode { display:block; left:1.5rem; bottom:12rem; font-size:0.55rem; }
       .hero-mobile-tagline { display:block; position:absolute; z-index:3; bottom:14.5rem; left:1.5rem; right:1.5rem; font-family:var(--font-code); font-size:0.6rem; color:rgba(232,232,226,0.4); letter-spacing:0.14em; text-transform:uppercase; line-height:1.8; }
       .hero-mobile-tagline span { display:inline-block; margin-right:0.6rem; }
-      .hero-mobile-tagline span::before { content:'—'; margin-right:0.4rem; color:rgba(200,0,0,0.5); }
+      .hero-mobile-tagline span::before { content:'&#8212;'; margin-right:0.4rem; color:rgba(200,0,0,0.5); }
       .hero-hud { display:none; }
       .hero-scroll-hint { display:none; }
       .hero-meta { display:none; }
@@ -574,6 +578,10 @@
       <div class="about-photo-wrap">
         <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777109700/IMG_5165_jxplmy.jpg" alt="Riju" loading="lazy" />
         <span class="about-photo-label">VisualsbyRiju — Editor</span>
+      </div>
+      <div class="about-location reveal reveal-delay-3">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Bengaluru, India
       </div>
     </div>
   </section>
@@ -748,6 +756,10 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-name">VisualsbyRiju</div>
+    <div class="footer-location">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Bengaluru, India
+    </div>
     <div class="footer-frame">Rendering frame <span id="frameNum">0</span> of 500</div>
     <div class="footer-copy">&#169; 2026 VisualsbyRiju. All rights reserved.</div>
     <div class="footer-sig">Designed &amp; Built by <span>MDJK</span></div>
