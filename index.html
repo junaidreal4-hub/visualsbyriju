@@ -43,9 +43,8 @@
 
     /* ===================== NAV ===================== */
     nav { position:fixed; top:0; left:0; right:0; z-index:1000; padding:1.5rem 2rem; display:flex; justify-content:space-between; align-items:center; }
-    /* FIX #7: Desktop logo — visible on desktop, hidden only on smallest breakpoint and re-shown on mobile */
-    .nav-logo { font-family:var(--font-code); font-size:0.7rem; color:var(--text); letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; display:block; }
-    .nav-links { display:flex; list-style:none; justify-content:space-around; flex:1; margin-left:2rem; }
+    .nav-logo { font-family:var(--font-code); font-size:0.7rem; color:var(--text); letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; display:none; }
+    .nav-links { display:flex; list-style:none; justify-content:space-around; flex:1; }
     .nav-links a { font-family:var(--font-mono); font-size:0.75rem; color:var(--text); text-decoration:none; letter-spacing:0.12em; text-transform:uppercase; transition:opacity 0.3s; }
     .nav-links a:hover { opacity:0.5; }
     .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:1001; }
@@ -102,7 +101,6 @@
 
     /* ===================== ABOUT ===================== */
     #about { display:grid; grid-template-columns:1.2fr 0.8fr; gap:5rem; border-top:1px solid var(--border); align-items:start; }
-    /* FIX #2: Added missing .about-left CSS rule */
     .about-left { display:flex; flex-direction:column; }
     .about-heading { font-family:var(--font-mono); font-size:clamp(1.8rem,3.2vw,3rem); font-weight:400; line-height:1.1; letter-spacing:-0.03em; margin-bottom:2.5rem; }
     .about-heading em { font-style:normal; }
@@ -152,7 +150,6 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
     }
-    /* FIX #4: Pause toolFloat animation on hover to prevent transform conflict */
     .gear-tool-item {
       display: flex;
       flex-direction: column;
@@ -370,7 +367,6 @@
     }
     .cf-field input:focus, .cf-field textarea:focus, .cf-field select:focus { border-color:rgba(255,255,255,.35); }
     .cf-field select option { background:#111; color:var(--text); }
-    /* FIX #5: Use innerHTML-safe structure — button text is in a <span>, SVG stays intact */
     .cf-submit {
       display:inline-flex; align-items:center; gap:0.75rem;
       padding:0.9rem 2.2rem; border:1px solid var(--text-muted);
@@ -423,6 +419,7 @@
     @media(max-width:600px){
       body { cursor:auto; }
       nav { padding:1.2rem 1.5rem; justify-content:space-between; }
+      .nav-logo { display:block; }
       .nav-links { display:none; }
       .nav-burger { display:flex; }
       section { padding:4rem 1.5rem; }
@@ -482,14 +479,11 @@
   </div>
 
   <!-- NAV -->
-  <!-- FIX #7: Desktop logo now visible with proper CSS (display:block) -->
   <nav>
     <a class="nav-logo" href="#">VBR</a>
     <ul class="nav-links">
       <li><a href="#works">(Works)</a></li>
       <li><a href="#about">(About)</a></li>
-      <!-- FIX #6: Added (Gear) nav link on desktop -->
-      <li><a href="#gear">(Gear)</a></li>
       <li><a href="#services">(Services)</a></li>
       <li><a href="#contact">(Contact)</a></li>
     </ul>
@@ -499,11 +493,9 @@
   </nav>
 
   <!-- MOBILE DRAWER -->
-  <!-- FIX #8: Added (Gear) link to mobile drawer -->
   <div class="nav-drawer" id="navDrawer">
     <a href="#works" class="drawer-link">(Works)</a>
     <a href="#about" class="drawer-link">(About)</a>
-    <a href="#gear" class="drawer-link">(Gear)</a>
     <a href="#services" class="drawer-link">(Services)</a>
     <a href="#contact" class="drawer-link">(Contact)</a>
     <div class="nav-drawer-socials">
@@ -723,7 +715,6 @@
       <button class="fm-close" id="closeFormBtn">&#10005; &nbsp; Close</button>
       <span class="fm-label">(New Project)</span>
       <h2 class="fm-heading">Tell me about<br/>your project</h2>
-      <!-- FIX #1: Replaced placeholder Formspree ID with real endpoint -->
       <form class="fm-form" id="contactForm" action="https://formspree.io/f/maqakyla" method="POST">
         <div class="cf-row">
           <div class="cf-field">
@@ -750,7 +741,6 @@
           <label for="cf-message">Message</label>
           <textarea id="cf-message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
         </div>
-        <!-- FIX #5: Button text wrapped in <span class="cf-submit-text"> so SVG is preserved on state changes -->
         <button type="submit" class="cf-submit">
           <span class="cf-submit-text">Send Message</span>
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -872,7 +862,6 @@ openFormBtn.addEventListener('click',openFormModal);
 closeFormBtn.addEventListener('click',closeFormModal);
 formModal.addEventListener('click',function(e){if(e.target===formModal)closeFormModal();});
 
-// FIX #3: Escape key now only closes whichever modal is currently open, not both
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
     if(lightbox.classList.contains('open')){closeLightbox();}
@@ -941,7 +930,6 @@ WORKS.forEach(function(work){
 var revealObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}});},{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(el){revealObs.observe(el);});
 
-// FIX #5: Use querySelector for the text span so the SVG arrow is never wiped
 var cf=document.getElementById('contactForm');
 if(cf){
   cf.addEventListener('submit',function(e){
