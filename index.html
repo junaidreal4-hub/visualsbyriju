@@ -24,25 +24,20 @@
     body { background: var(--bg); color: var(--text); font-family: var(--font-mono); overflow-x: hidden; cursor: none; }
 
     /* ===================== LOADER ===================== */
-    #loader {
-      position: fixed; inset: 0; z-index: 99999;
-      background: #000;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.6s ease;
-    }
-    .loader-inner { display: flex; flex-direction: column; gap: 0.35rem; }
-    .loader-name { font-family: 'Space Mono', monospace; font-size: clamp(0.85rem, 2vw, 1.05rem); color: #e8e8e2; letter-spacing: 0.06em; font-weight: 400; }
-    .loader-tagline { font-family: 'Space Mono', monospace; font-size: clamp(0.6rem, 1.2vw, 0.72rem); color: rgba(232,232,226,0.55); letter-spacing: 0.04em; font-weight: 400; }
-    .loader-sub { font-family: 'Space Mono', monospace; font-size: clamp(0.6rem, 1.2vw, 0.72rem); color: rgba(232,232,226,0.4); letter-spacing: 0.02em; margin-bottom: 0.55rem; }
-    .loader-bar-track { width: 260px; height: 3px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; }
-    .loader-bar-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #cc0000; transition: width 0.08s linear; }
-    .loader-frame-text { font-family: 'Space Mono', monospace; font-size: clamp(0.55rem, 1vw, 0.65rem); color: rgba(232,232,226,0.45); letter-spacing: 0.04em; margin-top: 0.4rem; }
+    #loader { position:fixed; inset:0; z-index:99999; background:#000; display:flex; align-items:center; justify-content:center; transition:opacity 0.6s ease; }
+    .loader-inner { display:flex; flex-direction:column; gap:0.35rem; }
+    .loader-name { font-family:'Space Mono',monospace; font-size:clamp(0.85rem,2vw,1.05rem); color:#e8e8e2; letter-spacing:0.06em; font-weight:400; }
+    .loader-tagline { font-family:'Space Mono',monospace; font-size:clamp(0.6rem,1.2vw,0.72rem); color:rgba(232,232,226,0.55); letter-spacing:0.04em; font-weight:400; }
+    .loader-sub { font-family:'Space Mono',monospace; font-size:clamp(0.6rem,1.2vw,0.72rem); color:rgba(232,232,226,0.4); letter-spacing:0.02em; margin-bottom:0.55rem; }
+    .loader-bar-track { width:260px; height:3px; background:rgba(255,255,255,0.1); position:relative; overflow:hidden; }
+    .loader-bar-fill { position:absolute; top:0; left:0; height:100%; width:0%; background:#cc0000; transition:width 0.08s linear; }
+    .loader-frame-text { font-family:'Space Mono',monospace; font-size:clamp(0.55rem,1vw,0.65rem); color:rgba(232,232,226,0.45); letter-spacing:0.04em; margin-top:0.4rem; }
 
     /* ===================== CURSOR ===================== */
-    .cursor { position: fixed; width: 48px; height: 48px; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); display: none; }
-    @media (hover: hover) and (pointer: fine) { .cursor { display: block; } body { cursor: none; } }
-    body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke: #cc0000; }
-    body:has(a:hover) .cursor polyline, body:has(button:hover) .cursor polyline { stroke: #cc0000; }
+    .cursor { position:fixed; width:48px; height:48px; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.35s cubic-bezier(0.16,1,0.3,1); display:none; }
+    @media (hover:hover) and (pointer:fine) { .cursor { display:block; } body { cursor:none; } }
+    body:has(a:hover) .cursor line, body:has(button:hover) .cursor line { stroke:#cc0000; }
+    body:has(a:hover) .cursor polyline, body:has(button:hover) .cursor polyline { stroke:#cc0000; }
     body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:9997; opacity:0.4; }
     ::-webkit-scrollbar{width:3px} ::-webkit-scrollbar-track{background:var(--bg)} ::-webkit-scrollbar-thumb{background:#cc0000}
 
@@ -53,7 +48,7 @@
     .nav-links a { font-family:var(--font-mono); font-size:0.75rem; color:var(--text); text-decoration:none; letter-spacing:0.12em; text-transform:uppercase; transition:opacity 0.3s; }
     .nav-links a:hover { opacity:0.5; }
     .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:1001; }
-    .nav-burger span { display:block; width:24px; height:1.5px; background:var(--text); transition:transform 0.35s, opacity 0.35s; transform-origin:center; }
+    .nav-burger span { display:block; width:24px; height:1.5px; background:var(--text); transition:transform 0.35s,opacity 0.35s; transform-origin:center; }
     .nav-burger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
     .nav-burger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
     .nav-burger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
@@ -77,13 +72,9 @@
     .reel-num.active { color:var(--text); } .reel-num:hover { color:var(--text-dim); }
     .hero-timecode { position:absolute; bottom:8.5rem; left:2rem; z-index:3; font-family:var(--font-code); font-size:0.65rem; color:var(--text-muted); letter-spacing:0.08em; }
     .hero-content { position:absolute; bottom:8rem; left:2rem; right:2rem; z-index:3; }
-    .hero-title {
-      font-family:var(--font-mono); font-size:clamp(2rem,9vw,12rem); font-weight:700;
-      line-height:1; letter-spacing:-0.03em; white-space:nowrap; overflow:hidden;
-      text-overflow:ellipsis; opacity:0;
-    }
+    .hero-title { font-family:var(--font-mono); font-size:clamp(2rem,9vw,12rem); font-weight:700; line-height:1; letter-spacing:-0.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:0; }
     .hero-title .scramble-char { display:inline-block; transition:color 0.08s; }
-    .hero-title .scramble-char.glitch { color: #cc0000; }
+    .hero-title .scramble-char.glitch { color:#cc0000; }
     .hero-meta { position:absolute; bottom:0; right:0; text-align:right; opacity:0; transition:opacity 1s ease 0.4s; }
     .hero-meta p { font-family:var(--font-mono); font-size:clamp(0.5rem,1.2vw,0.65rem); color:rgba(232,232,226,.7); letter-spacing:0.08em; line-height:1.9; text-transform:uppercase; }
     .hero-timeline { position:absolute; bottom:0; left:0; right:0; z-index:4; display:flex; border-top:1px solid rgba(255,255,255,.08); background:rgba(8,8,8,.6); backdrop-filter:blur(6px); }
@@ -185,46 +176,94 @@
     .contact-heading { font-family:var(--font-mono); font-size:clamp(1.8rem,4vw,3.8rem); font-weight:400; line-height:1.05; letter-spacing:-0.03em; margin-bottom:1.5rem; }
     .contact-heading em { font-style:normal; }
     .contact-sub { font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); letter-spacing:0.1em; margin-bottom:3.5rem; }
-    .contact-cta { display:inline-flex; align-items:center; gap:1rem; padding:1rem 2.5rem; border:1px solid var(--text-muted); font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:border-color 0.3s,opacity 0.3s; }
+    .contact-cta { display:inline-flex; align-items:center; gap:1rem; padding:1rem 2.5rem; border:1px solid var(--text-muted); font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text); text-decoration:none; transition:border-color 0.3s,opacity 0.3s; cursor:pointer; background:none; }
     .contact-cta:hover { border-color:var(--text); opacity:0.6; }
     .contact-socials { display:flex; justify-content:center; gap:1.5rem; margin-top:3.5rem; flex-wrap:wrap; }
     .contact-socials a { font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); text-decoration:none; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.3s; padding:0.5rem; }
     .contact-socials a:hover { color:var(--text); }
-    .contact-form-wrap{position:relative;z-index:2;max-width:560px;margin:3rem auto 0;text-align:left;}
-    .contact-form-wrap form{display:flex;flex-direction:column;gap:1.2rem;}
-    .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
-    .cf-field{display:flex;flex-direction:column;gap:0.4rem;}
-    .cf-field label{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);}
-    .cf-field input,.cf-field textarea,.cf-field select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:var(--text);font-family:var(--font-mono);font-size:0.72rem;padding:0.75rem 1rem;outline:none;transition:border-color 0.3s;resize:none;-webkit-appearance:none;}
-    .cf-field input:focus,.cf-field textarea:focus,.cf-field select:focus{border-color:rgba(255,255,255,.4);}
-    .cf-field select option{background:#111;color:var(--text);}
-    .cf-submit{display:inline-flex;align-items:center;gap:0.75rem;padding:0.9rem 2.2rem;border:1px solid var(--text-muted);background:transparent;font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);cursor:pointer;transition:border-color 0.3s,opacity 0.3s;margin-top:0.4rem;align-self:flex-start;}
-    .cf-submit:hover{border-color:var(--text);opacity:0.7;}
-    .cf-submit svg{width:14px;height:14px;stroke:currentColor;fill:none;transition:transform 0.3s;}
-    .cf-submit:hover svg{transform:translateX(4px);}
-    .cf-success{display:none;font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;color:#c8b89a;text-transform:uppercase;padding:1rem;border:1px solid rgba(200,184,154,.3);text-align:center;margin-top:1rem;}
-    .cf-success.show{display:block;}
-    @media(max-width:600px){.cf-row{grid-template-columns:1fr;}}
+
+    /* ===================== FORM MODAL ===================== */
+    #formModal {
+      position:fixed; inset:0; z-index:20000;
+      background:rgba(0,0,0,0);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none;
+      transition:opacity 0.4s ease, background 0.4s ease;
+      padding:1.5rem;
+    }
+    #formModal.open {
+      opacity:1; pointer-events:all;
+      background:rgba(0,0,0,0.92);
+      backdrop-filter:blur(8px);
+    }
+    .fm-inner {
+      position:relative;
+      width:min(92vw,560px);
+      background:#0f0f0f;
+      border:1px solid var(--border);
+      padding:3rem 2.5rem 2.5rem;
+      transform:translateY(24px) scale(0.97);
+      transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      max-height:90vh;
+      overflow-y:auto;
+    }
+    #formModal.open .fm-inner {
+      transform:translateY(0) scale(1);
+    }
+    .fm-close {
+      position:absolute; top:1.2rem; right:1.4rem;
+      background:none; border:none; color:var(--text-muted);
+      font-family:var(--font-code); font-size:0.65rem;
+      letter-spacing:0.12em; text-transform:uppercase;
+      cursor:pointer; display:flex; align-items:center; gap:0.5rem;
+      transition:color 0.3s; padding:0.3rem;
+    }
+    .fm-close:hover { color:var(--text); }
+    .fm-label { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.18em; text-transform:uppercase; display:block; margin-bottom:1.8rem; }
+    .fm-heading { font-family:var(--font-mono); font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:400; letter-spacing:-0.02em; margin-bottom:2rem; line-height:1.2; }
+    .fm-form { display:flex; flex-direction:column; gap:1.2rem; }
+    .cf-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    .cf-field { display:flex; flex-direction:column; gap:0.4rem; }
+    .cf-field label { font-family:var(--font-mono); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); }
+    .cf-field input, .cf-field textarea, .cf-field select {
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
+      color:var(--text); font-family:var(--font-mono); font-size:0.72rem;
+      padding:0.75rem 1rem; outline:none; transition:border-color 0.3s;
+      resize:none; -webkit-appearance:none;
+    }
+    .cf-field input:focus, .cf-field textarea:focus, .cf-field select:focus { border-color:rgba(255,255,255,.35); }
+    .cf-field select option { background:#111; color:var(--text); }
+    .cf-submit {
+      display:inline-flex; align-items:center; gap:0.75rem;
+      padding:0.9rem 2.2rem; border:1px solid var(--text-muted);
+      background:transparent; font-family:var(--font-mono); font-size:0.68rem;
+      letter-spacing:0.15em; text-transform:uppercase; color:var(--text);
+      cursor:pointer; transition:border-color 0.3s,opacity 0.3s;
+      margin-top:0.4rem; align-self:flex-start;
+    }
+    .cf-submit:hover { border-color:var(--text); opacity:0.7; }
+    .cf-submit svg { width:14px; height:14px; stroke:currentColor; fill:none; transition:transform 0.3s; }
+    .cf-submit:hover svg { transform:translateX(4px); }
+    .cf-success {
+      display:none; font-family:var(--font-mono); font-size:0.68rem;
+      letter-spacing:0.1em; color:#c8b89a; text-transform:uppercase;
+      padding:1rem; border:1px solid rgba(200,184,154,.3);
+      text-align:center; margin-top:1rem;
+    }
+    .cf-success.show { display:block; }
+    @media(max-width:600px) {
+      .cf-row { grid-template-columns:1fr; }
+      .fm-inner { padding:2.5rem 1.5rem 2rem; }
+    }
 
     /* ===================== FOOTER ===================== */
     footer { border-top:1px solid var(--border); padding:2.5rem 2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
     .footer-name { font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; }
     .footer-frame { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
     .footer-copy { font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); letter-spacing:0.08em; }
-    .footer-sig {
-      font-family: var(--font-code);
-      font-size: 0.55rem;
-      color: var(--text-muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.5;
-      transition: opacity 0.3s;
-    }
-    .footer-sig:hover { opacity: 1; }
-    .footer-sig span {
-      color: #cc0000;
-      font-style: normal;
-    }
+    .footer-sig { font-family:var(--font-code); font-size:0.55rem; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; opacity:0.5; transition:opacity 0.3s; }
+    .footer-sig:hover { opacity:1; }
+    .footer-sig span { color:#cc0000; font-style:normal; }
 
     /* ===================== REVEAL ===================== */
     .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.9s var(--transition),transform 0.9s var(--transition); }
@@ -250,7 +289,6 @@
       .nav-burger { display:flex; }
       section { padding:4rem 1.5rem; }
       #works { padding:4rem 1.5rem 3rem; }
-
       .hero-vid { object-fit:contain; object-position:center top; }
       .hero-overlay { background:linear-gradient(to bottom,rgba(8,8,8,0) 0%,rgba(8,8,8,0) 50%,rgba(8,8,8,.75) 68%,rgba(8,8,8,1) 80%); }
       .hero-content { bottom:6.2rem; left:1.5rem; right:1.5rem; }
@@ -267,7 +305,6 @@
       .timeline-num { font-size:0.5rem; margin-bottom:0.35rem; display:block; }
       .timeline-title { display:block; font-size:0.62rem; color:rgba(232,232,226,.4); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       .timeline-item.active .timeline-title { color:var(--text); }
-
       .about-stats { gap:1.5rem; }
       .stat-num { font-size:1.8rem; }
       .works-grid { grid-template-columns:1fr; }
@@ -287,9 +324,7 @@
       <div class="loader-name">[VISUALSBYRIJU]</div>
       <div class="loader-tagline">Video Editor · Photography · Videography</div>
       <div class="loader-sub">Exploring visuals, one frame at a time.</div>
-      <div class="loader-bar-track">
-        <div class="loader-bar-fill" id="loaderBarFill"></div>
-      </div>
+      <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBarFill"></div></div>
       <div class="loader-frame-text" id="loaderFrameText">Rendering frame 0 of 500.</div>
     </div>
   </div>
@@ -457,52 +492,56 @@
       <span class="contact-label-top reveal">(Contact)</span>
       <h2 class="contact-heading reveal">Let's build<br/>something <em>remarkable</em></h2>
       <p class="contact-sub reveal">Available for projects worldwide</p>
-      <a href="mailto:visualsbyriju@gmail.com" class="contact-cta reveal">Start a Project &nbsp;&#8594;</a>
+      <button class="contact-cta reveal" id="openFormBtn">Start a Project &nbsp;&#8594;</button>
       <div class="contact-socials reveal reveal-delay-2">
         <a href="https://www.instagram.com/visualsbyriju" target="_blank" rel="noopener">Instagram</a>
         <a href="https://youtu.be/wQwyVq_eUI8" target="_blank" rel="noopener">YouTube</a>
         <a href="https://wa.me/919474269894" target="_blank" rel="noopener">WhatsApp</a>
         <a href="mailto:visualsbyriju@gmail.com">Email</a>
       </div>
-
-      <!-- CONTACT FORM -->
-      <div class="contact-form-wrap reveal reveal-delay-3">
-        <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_ID" method="POST">
-          <div class="cf-row">
-            <div class="cf-field">
-              <label for="cf-name">Name</label>
-              <input type="text" id="cf-name" name="name" placeholder="Your name" required />
-            </div>
-            <div class="cf-field">
-              <label for="cf-email">Email</label>
-              <input type="email" id="cf-email" name="email" placeholder="your@email.com" required />
-            </div>
-          </div>
-          <div class="cf-field">
-            <label for="cf-service">Service</label>
-            <select id="cf-service" name="service">
-              <option value="" disabled selected>Select a service</option>
-              <option value="Video Editing">Video Editing</option>
-              <option value="Photo Editing">Photo Editing</option>
-              <option value="Photography">Photography</option>
-              <option value="Videography">Videography</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="cf-field">
-            <label for="cf-message">Message</label>
-            <textarea id="cf-message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
-          </div>
-          <button type="submit" class="cf-submit">
-            Send Message
-            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </button>
-        </form>
-        <div id="cfSuccess" class="cf-success">&#10003; &nbsp; Message received — I'll be in touch soon.</div>
-      </div>
-
     </div>
   </section>
+
+  <!-- FORM MODAL -->
+  <div id="formModal">
+    <div class="fm-inner">
+      <button class="fm-close" id="closeFormBtn">&#10005; &nbsp; Close</button>
+      <span class="fm-label">(New Project)</span>
+      <h2 class="fm-heading">Tell me about<br/>your project</h2>
+      <form class="fm-form" id="contactForm" action="https://formspree.io/f/REPLACE_WITH_YOUR_ID" method="POST">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="cf-field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+        <div class="cf-field">
+          <label for="cf-service">Service</label>
+          <select id="cf-service" name="service">
+            <option value="" disabled selected>Select a service</option>
+            <option value="Video Editing">Video Editing</option>
+            <option value="Photo Editing">Photo Editing</option>
+            <option value="Photography">Photography</option>
+            <option value="Videography">Videography</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+        </div>
+        <button type="submit" class="cf-submit">
+          Send Message
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+      <div id="cfSuccess" class="cf-success">&#10003; &nbsp; Message received — I'll be in touch soon.</div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -606,6 +645,17 @@ reelNums.forEach(function(r,i){r.addEventListener('click',function(){activateCli
 clipTimer=setTimeout(function(){activateClip(1,true);},CLIP_DUR);
 void tlItems[0].offsetWidth;tlItems[0].classList.add('animating');tlItems[0].style.setProperty('--clip-duration',(CLIP_DUR/1000)+'s');
 
+// ===================== FORM MODAL =====================
+var formModal=document.getElementById('formModal');
+var openFormBtn=document.getElementById('openFormBtn');
+var closeFormBtn=document.getElementById('closeFormBtn');
+function openFormModal(){formModal.classList.add('open');document.body.style.overflow='hidden';}
+function closeFormModal(){formModal.classList.remove('open');document.body.style.overflow='';}
+openFormBtn.addEventListener('click',openFormModal);
+closeFormBtn.addEventListener('click',closeFormModal);
+formModal.addEventListener('click',function(e){if(e.target===formModal)closeFormModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeFormModal();});
+
 var WORKS=[
   {num:'001',title:'Coorg',tag:'Cinematic / Travel',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Coorg_rjk6y9',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Coorg_rjk6y9.jpg',w:420,h:236},
   {num:'002',title:'Happen Bangalore',tag:'Commercial / Motion',src:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_mp4/Happen_Blr_jkugba',poster:'https://res.cloudinary.com/dtkqhuitl/video/upload/q_auto,f_jpg,w_640,so_2/Happen_Blr_jkugba.jpg',w:360,h:202},
@@ -630,7 +680,7 @@ var POSITIONS=[
   {left:3,top:1220,rot:1},{left:46,top:1220,rot:-1.5},
   {left:3,top:1520,rot:-1},{left:78,top:20,rot:2},
   {left:78,top:440,rot:-1.5},{left:78,top:860,rot:1.5},
-]
+];
 var lightbox=document.getElementById('lightbox');
 var lbVid=document.getElementById('lightboxVid');
 var lbTitle=document.getElementById('lightboxTitle');
@@ -639,7 +689,7 @@ function openLightbox(w){lbVid.src=w.src;lbVid.load();lbVid.play().catch(functio
 function closeLightbox(){lightbox.classList.remove('open');lbVid.pause();lbVid.src='';document.body.style.overflow='';}
 lbClose.addEventListener('click',closeLightbox);
 lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeLightbox();closeFormModal();}});
 
 var scatter=document.getElementById('worksScatter');
 WORKS.forEach(function(work,i){
@@ -655,7 +705,7 @@ WORKS.forEach(function(work,i){
   var ro=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){setTimeout(function(){card.style.transition='opacity 0.8s cubic-bezier(0.16,1,0.3,1),transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s';card.style.opacity='1';},i*100);ro.unobserve(card);}});},{threshold:0.05});
   card.style.opacity='0';card.style.transition='none';ro.observe(card);
 });
-  (function(){var cards=scatter.querySelectorAll('.scatter-card');var maxBottom=0;cards.forEach(function(c){var b=parseInt(c.style.top)+parseInt(c.style.height);if(b>maxBottom)maxBottom=b;});scatter.style.height=(maxBottom+80)+'px';})();
+(function(){var cards=scatter.querySelectorAll('.scatter-card');var maxBottom=0;cards.forEach(function(c){var b=parseInt(c.style.top)+parseInt(c.style.height);if(b>maxBottom)maxBottom=b;});scatter.style.height=(maxBottom+80)+'px';})();
 
 var grid=document.getElementById('worksGrid');
 WORKS.forEach(function(work){
@@ -681,7 +731,7 @@ if(cf){
           cf.reset();
           document.getElementById('cfSuccess').classList.add('show');
           btn.textContent='Sent ✓';
-        } else {
+        }else{
           btn.textContent='Error — Try again';
           btn.disabled=false;
         }
