@@ -113,6 +113,178 @@
     .about-photo-wrap:hover img { transform:scale(1.04); filter:grayscale(0%) contrast(1.05); }
     .about-photo-label { position:absolute; bottom:1rem; left:1rem; font-family:var(--font-code); font-size:0.55rem; color:rgba(232,232,226,.5); letter-spacing:0.1em; text-transform:uppercase; background:rgba(8,8,8,.6); padding:0.3rem 0.6rem; backdrop-filter:blur(4px); }
 
+
+      /* ===================== GEAR & TOOLS ===================== */
+  
+  #gear {
+    border-top: 1px solid var(--border);
+    padding: 6rem 2rem;
+  }
+  
+  .gear-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    margin-top: 3rem;
+  }
+  
+  .gear-heading {
+    font-family: var(--font-mono);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+  
+  .gear-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .gear-photo-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  
+  .gear-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(60%) contrast(1.05);
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
+  }
+  
+  .gear-photo-wrap:hover img {
+    transform: scale(1.03);
+    filter: grayscale(0%) contrast(1.05);
+  }
+  
+  .gear-photo-label {
+    position: absolute;
+    bottom: 0.8rem;
+    left: 0.8rem;
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    color: rgba(232,232,226,0.6);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(8,8,8,0.75);
+    padding: 0.35rem 0.7rem;
+    backdrop-filter: blur(4px);
+  }
+  
+  .gear-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .gear-spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  
+  .gear-spec-label {
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  
+  .gear-spec-value {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.01);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  
+  .tool-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.03);
+  }
+  
+  .tool-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .tool-card:hover .tool-icon {
+    color: var(--text);
+  }
+  
+  .tool-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  
+  .tool-desc {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+  
+  /* Gear & Tools - Tablet */
+  @media (max-width: 900px) {
+    .gear-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+  
+  /* Gear & Tools - Mobile */
+  @media (max-width: 600px) {
+    #gear {
+      padding: 4rem 1.5rem;
+    }
+    
+    .gear-grid {
+      gap: 2.5rem;
+    }
+    
+    .tools-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .gear-photo-wrap {
+      aspect-ratio: 16/9;
+    }
+  }
     /* ===================== WORKS ===================== */
     #works { border-top:1px solid var(--border); padding:6rem 2rem 4rem; }
     .works-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; }
@@ -444,6 +616,99 @@
       <div class="about-photo-wrap">
         <img src="https://res.cloudinary.com/dtkqhuitl/image/upload/v1777109700/IMG_5165_jxplmy.jpg" alt="Riju" loading="lazy" />
         <span class="about-photo-label">VisualsbyRiju — Editor</span>
+      </div>
+    </div>
+  </section>
+
+    <!-- ===================== GEAR & TOOLS ===================== -->
+  
+  <section id="gear" class="reveal">
+    <span class="section-label">(Gear & Tools)</span>
+    <div class="gear-grid">
+      
+      <!-- GEAR COLUMN -->
+      <div class="gear-col">
+        <h3 class="gear-heading">Gear</h3>
+        <div class="gear-card">
+          <div class="gear-photo-wrap">
+            <img src="PLACEHOLDER_CAMERA_URL" alt="Sony A6700" id="gearCameraImg">
+            <div class="gear-photo-label">Sony A6700</div>
+          </div>
+          <div class="gear-specs">
+            <div class="gear-spec-item">
+              <span class="gear-spec-label">Sensor</span>
+              <span class="gear-spec-value">26MP APS-C</span>
+            </div>
+            <div class="gear-spec-item">
+              <span class="gear-spec-label">Video</span>
+              <span class="gear-spec-value">4K 120fps</span>
+            </div>
+            <div class="gear-spec-item">
+              <span class="gear-spec-label">AF</span>
+              <span class="gear-spec-value">AI-powered tracking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- TOOLS COLUMN -->
+      <div class="tools-col">
+        <h3 class="gear-heading">Tools</h3>
+        <div class="tools-grid">
+          
+          <!-- DaVinci Resolve -->
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="4" width="32" height="32" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M4 14h32M4 26h32" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="12" cy="20" r="2" fill="currentColor"/>
+                <rect x="18" y="18" width="4" height="4" fill="currentColor"/>
+              </svg>
+            </div>
+            <h4 class="tool-name">DaVinci Resolve</h4>
+            <p class="tool-desc">Professional color grading & editing</p>
+          </div>
+          
+          <!-- Canva -->
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 8h24v24H8z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M14 14h12M14 20h8M14 26h10" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h4 class="tool-name">Canva</h4>
+            <p class="tool-desc">Graphic design & visual content</p>
+          </div>
+          
+          <!-- CapCut -->
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="10" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M15 17l4 3-4 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="26" cy="23" r="1.5" fill="currentColor"/>
+              </svg>
+            </div>
+            <h4 class="tool-name">CapCut</h4>
+            <p class="tool-desc">Fast-paced video editing & effects</p>
+          </div>
+          
+          <!-- Lightroom -->
+          <div class="tool-card">
+            <div class="tool-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M20 12v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M10 20h4M26 20h4M20 10v4M20 26v4" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </div>
+            <h4 class="tool-name">Lightroom</h4>
+            <p class="tool-desc">Photo editing & enhancement</p>
+          </div>
+          
+        </div>
       </div>
     </div>
   </section>
